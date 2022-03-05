@@ -6,3 +6,4 @@
 
 # Django
 ~/.pyenv/shims/python neighborhood/manage.py runserver
+~/.pyenv/shims/python neighborhood/manage.py load_tax_data

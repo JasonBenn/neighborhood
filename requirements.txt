@@ -4,3 +4,5 @@ matplotlib
 numpy
 django==3.2
 psycopg2
+ipdb
+tqdm

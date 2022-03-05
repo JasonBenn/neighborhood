@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from neighborhood.houses.models import TaxAssessorData
+from houses.models import TaxAssessorData
 
-admin.neighborhood.register(TaxAssessorData)
+admin.site.register(TaxAssessorData)
