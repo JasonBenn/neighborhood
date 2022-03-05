@@ -25,6 +25,7 @@ class Command(BaseCommand):
                     block=row['block'],
                     lot=row['lot'],
                     parcel_number=row['parcel_number'],
+                    property_location=row['property_location'],
                     lot_area=row['lot_area'],
                     property_area=row['property_area'],
                     basement_area=row['basement_area'],

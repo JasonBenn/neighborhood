@@ -23,6 +23,7 @@ class TaxAssessorData(BaseModel):
     lot = models.CharField(max_length=6)  # 4
     apn = models.CharField(max_length=12)
     parcel_number = models.CharField(max_length=12)
+    property_location = models.TextField()
 
     # Size
     lot_area = models.IntegerField()
