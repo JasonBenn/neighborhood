@@ -2,4 +2,5 @@ geopandas
 pandas
 matplotlib
 numpy
-django
+django==3.2
+psycopg2
