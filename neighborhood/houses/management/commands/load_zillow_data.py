@@ -23,9 +23,9 @@ class Command(BaseCommand):
         for index, row in tqdm(df.replace({np.nan: None}).iterrows()):
             try:
                 ZillowData.objects.create(
-                    apn=row['block'] + '-' + row['lot'],
-                    block=row['block'],
-                    lot=row['lot'],
+                    apn=row['block'].zfill(3) + '-' + row['lot'].zfill(3),
+                    block=row['block'].zfill(3),
+                    lot=row['lot'].zfill(3),
                     zillow_url=row['Zillow URL'],
                     zestimate=currency_to_int(row["Zestimate"]) if row["Zestimate"] else None,
                     rent_zestimate=currency_to_int(row["Rent Zestimate"]) if row["Rent Zestimate"] else None,
@@ -35,7 +35,7 @@ class Command(BaseCommand):
                     sqft=currency_to_int(row["Sqft"]) if row["Sqft"] else None,
                     time_scraped=parser.parse(row["Time Scraped"]).replace(tzinfo=pytz.UTC) if row["Time Scraped"] else None,
                     price_history=json.loads(row["Price History"]) if row["Price History"] else None,
-                    Label=row["Label"],
+                    label=row["Label"],
                 )
             except:
                 import ipdb;
