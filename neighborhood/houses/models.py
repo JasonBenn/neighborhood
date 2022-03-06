@@ -161,3 +161,8 @@ class ZillowData(BaseModel):
     time_scraped = models.DateTimeField(null=True)
     price_history = models.JSONField(null=True)
     Label = models.FloatField(null=True, help_text="0 means a rating was impossible because there were no pictures")
+
+
+class Addresses(BaseModel):
+    apn = models.CharField(max_length=12)
+    address = models.TextField()
