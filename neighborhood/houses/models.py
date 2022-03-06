@@ -145,3 +145,19 @@ class Owners(BaseModel):
     prior_sale_date = models.DateField(null=True)
     prior_sale_price = models.IntegerField(null=True)
     prior_sale_recording_date = models.DateField(null=True)
+
+
+class ZillowData(BaseModel):
+    apn = models.CharField(max_length=12)
+    block = models.CharField(max_length=6)  # 5
+    lot = models.CharField(max_length=6)  # 4
+    zillow_url = models.TextField(null=True)
+    zestimate = models.IntegerField(null=True)
+    rent_zestimate = models.IntegerField(null=True)
+    rent = models.IntegerField(null=True)
+    bedrooms = models.IntegerField(null=True)
+    baths = models.FloatField(null=True)
+    sqft = models.IntegerField(null=True)
+    time_scraped = models.DateTimeField(null=True)
+    price_history = models.JSONField(null=True)
+    Label = models.FloatField(null=True, help_text="0 means a rating was impossible because there were no pictures")
