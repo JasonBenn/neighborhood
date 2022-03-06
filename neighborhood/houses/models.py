@@ -51,3 +51,53 @@ class TaxAssessorData(BaseModel):
     assessed_land_value = models.IntegerField()
     assessed_improvement_value = models.IntegerField()
     assessed_fixtures_value = models.IntegerField()
+
+
+class Zone(models.IntegerChoices):
+    PAGE_ST = 1
+    DUBOCE_CULDESACS = 2
+    EAST_OF_DUBOCE = 3
+    EAST_HILL = 4
+    DUBOCE_TRIANGLE_BEST = 5
+    NORTH_BUENA_VISTA = 6
+    ALAMO_SQUARE = 7
+    OAK_AND_FELL = 8
+    DUBOCE_TRIANGLE_REST = 9
+    ASHBURY_HEIGHTS = 10
+    NOPA = 11
+    NORTH_CORONA_HEIGHTS = 12
+    HAIGHT_ST = 13
+    EAST_OF_ALAMO = 14
+    CORONA_HEIGHTS = 15
+    NORTH_MISSION = 16
+
+
+class NeighborhoodBuildings(BaseModel):
+    class Meta:
+        unique_together = ["global_id", "zone"]
+
+    global_id = models.UUIDField()
+    apn = models.CharField(max_length=12)
+    geometry = models.TextField()
+    mblr = models.CharField(max_length=15)
+    zone = models.IntegerField(choices=Zone.choices)
+
+
+ZONE_LOOKUP = {
+    'Page St': Zone.PAGE_ST,
+    'Duboce Culdesacs': Zone.DUBOCE_CULDESACS,
+    'East of Duboce': Zone.EAST_OF_DUBOCE,
+    'East Hill': Zone.EAST_HILL,
+    'Duboce Triangle (the best)': Zone.DUBOCE_TRIANGLE_BEST,
+    'North Buena Vista': Zone.NORTH_BUENA_VISTA,
+    'Alamo Square': Zone.ALAMO_SQUARE,
+    'Oak & Fell': Zone.OAK_AND_FELL,
+    'Duboce Triangle (the rest)': Zone.DUBOCE_TRIANGLE_REST,
+    'Ashbury Heights': Zone.ASHBURY_HEIGHTS,
+    'NoPa': Zone.NOPA,
+    'North Corona Heights': Zone.NORTH_CORONA_HEIGHTS,
+    'Haight St': Zone.HAIGHT_ST,
+    'East of Alamo': Zone.EAST_OF_ALAMO,
+    'Corona Heights': Zone.CORONA_HEIGHTS,
+    'North Mission': Zone.NORTH_MISSION,
+}
