@@ -25,7 +25,7 @@ class Command(BaseCommand):
             if row['mblr'].startswith("CN"):
                 continue
             try:
-                matches = re.match('SF\d{1}(\d{3})([\d\w]{3,4})', row['mblr'])
+                matches = re.match('SF(\d{4})([\d\w]{3,4})', row['mblr'])
                 apn = matches.group(1) + '-' + matches.group(2)
                 NeighborhoodBuildings.objects.create(
                     global_id=UUID(row['globalid'][1:-1]),
