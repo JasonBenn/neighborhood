@@ -1,4 +1,5 @@
 from django.db import connection, models
+from django.db.models import BooleanField
 
 
 class BaseModel(models.Model):
@@ -101,3 +102,46 @@ ZONE_LOOKUP = {
     'Corona Heights': Zone.CORONA_HEIGHTS,
     'North Mission': Zone.NORTH_MISSION,
 }
+
+
+class Owners(BaseModel):
+    property_id = models.IntegerField(primary_key=True)
+    apn = models.CharField(max_length=12)
+
+    # owners
+    owner_name = models.TextField(null=True)
+    owner_1_full_name = models.TextField(null=True)
+    owner_2_full_name = models.TextField(null=True)
+    do_not_mail = BooleanField()
+    site_address = models.TextField(null=True)
+    mailing_address = models.TextField(null=True)
+    legal_description = models.TextField(null=True)
+
+    lot_sqft = models.IntegerField(null=True)
+    total_sqft = models.IntegerField(null=True)
+    year_built = models.IntegerField(null=True)
+    total_stories = models.FloatField(null=True)
+    comm_num_units = models.IntegerField(null=True)
+    res_full_baths = models.IntegerField(null=True)
+    res_half_baths = models.IntegerField(null=True)
+    parking_count = models.IntegerField(null=True)
+    parking_sqft = models.IntegerField(null=True)
+    parking_desc = models.CharField(max_length=64, null=True)
+
+    improvement_value = models.IntegerField(null=True)
+    land_value = models.IntegerField(null=True)
+    total_assessed_value = models.IntegerField(null=True)
+    tax_amount = models.IntegerField(null=True)
+
+    ot_sale_date = models.DateField(null=True)
+    ot_sale_price = models.IntegerField(null=True)
+    ot_deed_type = models.CharField(max_length=128, null=True)
+    ot_sale_recording_date = models.DateField(null=True)
+
+    market_sale_date = models.DateField(null=True)
+    market_sale_price = models.IntegerField(null=True)
+    market_sale_recording_date = models.DateField(null=True)
+
+    prior_sale_date = models.DateField(null=True)
+    prior_sale_price = models.IntegerField(null=True)
+    prior_sale_recording_date = models.DateField(null=True)
