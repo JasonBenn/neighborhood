@@ -23,8 +23,8 @@ class Command(BaseCommand):
         for index, row in tqdm(df.replace({np.nan: None}).iterrows()):
             try:
                 ZillowData.objects.create(
-                    apn=row['block'].zfill(3) + '-' + row['lot'].zfill(3),
-                    block=row['block'].zfill(3),
+                    apn=row['block'].zfill(4) + '-' + row['lot'].zfill(3),
+                    block=row['block'].zfill(4),
                     lot=row['lot'].zfill(3),
                     zillow_url=row['Zillow URL'],
                     zestimate=currency_to_int(row["Zestimate"]) if row["Zestimate"] else None,

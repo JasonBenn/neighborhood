@@ -41,7 +41,20 @@ where houses_neighborhoodbuildings.apn not in
                 join houses_owners as o on n.apn = o.apn
       );
 
+-- How well did the materialized table join together?
+-- Compare counts of non-nullable columns from each source table
+-- neighborhoodbuildings: 5340
 select count(*) from houses_aggregated;
+-- owners
+select count(*) from houses_aggregated where houses_aggregated.ot_sale_date is not null;
+select count(*) from houses_aggregated where houses_aggregated.market_sale_date is not null;
+select count(*) from houses_aggregated where houses_aggregated.prior_sale_date is not null;
+
+-- tax assessor data
+
+-- zillow data
+
 select count(*) from houses_aggregated where houses_aggregated.zillow_url is not null;
-select apn from houses_zillowdata where zillow_url is not null;
+select count(*) from houses_aggregated where houses_aggregated.time_scraped is not null;
 select count(*) from houses_aggregated where price_history is not null;
+select count(*) from houses_aggregated where houses_aggregated.geometry is not null;
