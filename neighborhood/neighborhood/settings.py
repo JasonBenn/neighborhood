@@ -55,7 +55,7 @@ ROOT_URLCONF = 'neighborhood.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['neighborhood/houses/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

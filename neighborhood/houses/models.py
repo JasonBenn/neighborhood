@@ -149,8 +149,8 @@ class Owners(BaseModel):
 
 class ZillowData(BaseModel):
     apn = models.CharField(max_length=12)
-    block = models.CharField(max_length=6)  # 5
-    lot = models.CharField(max_length=6)  # 4
+    address = models.TextField()
+    scraped_address = models.TextField()
     zillow_url = models.TextField(null=True)
     zestimate = models.IntegerField(null=True)
     rent_zestimate = models.IntegerField(null=True)
@@ -160,9 +160,21 @@ class ZillowData(BaseModel):
     sqft = models.IntegerField(null=True)
     time_scraped = models.DateTimeField(null=True)
     price_history = models.JSONField(null=True)
+    num_units = models.IntegerField(null=True)
+    filenames = models.TextField(null=True)
     label = models.FloatField(null=True, help_text="0 means a rating was impossible because there were no pictures")
 
 
 class Addresses(BaseModel):
     apn = models.CharField(max_length=12)
+    eas_fullid = models.CharField(max_length=20)
+    eas_baseid = models.CharField(max_length=6)
+    eas_subid = models.CharField(max_length=6)
     address = models.TextField()
+    address_number = models.CharField(max_length=16, null=True)
+    address_number_suffix = models.CharField(max_length=16, null=True)
+    street_name = models.CharField(max_length=64, null=True)
+    street_type = models.CharField(max_length=16, null=True)
+    unit_number = models.CharField(max_length=16, null=True)
+    zip_code = models.IntegerField()
+    parcel_number = models.CharField(max_length=32, null=True)
