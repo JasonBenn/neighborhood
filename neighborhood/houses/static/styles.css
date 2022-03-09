@@ -58,3 +58,7 @@ a {
     left: 0;
     border-radius: 5px;
 }
+
+.hidden {
+    display: none;
+}

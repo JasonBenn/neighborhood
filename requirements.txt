@@ -6,3 +6,4 @@ django==3.2
 psycopg2
 ipdb
 tqdm
+django-storages

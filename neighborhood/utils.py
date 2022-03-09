@@ -18,3 +18,7 @@ def parse_date(date: str):
         return datetime.date(year=int(match.group(1)), day=clamp(int(match.group(2)), 1, 31), month=clamp(int(match.group(3))+1, 1, 12))
 
     return datetime.datetime.strptime(date, "%m/%d/%Y").date()
+
+
+def format_address(addr: str) -> str:
+    return re.sub("^([^,]*),? San Francisco", "\g<1>, San Francisco", re.sub("\s", " ", addr.title())).replace(" Ca ", " CA ")

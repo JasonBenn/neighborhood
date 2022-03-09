@@ -155,4 +155,14 @@ where addrs.address like '1095%'
 --       and unit_number is not null
 order by addrs.address
 
-
+-- select 1 random record that has...
+--   0 records
+--   1 record, if rated 5 or higher
+--   2 records, if diff b/w them is >= 2
+select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, z.zillow_url, z.filenames, count(r.id), min(r.label)
+from houses_zillowsnapshot z
+left join houses_rating r on z.id = r.zillow_snapshot_id
+where z.filenames is not null
+group by z.id
+order by random()
+limit 10;
