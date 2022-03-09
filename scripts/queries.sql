@@ -157,13 +157,92 @@ order by addrs.address
 
 -- select 1 random record that has...
 --   0 records
---   1 record, if rated 5 or higher
+--   1 record, if rated gt 5
 --   2 records, if diff b/w them is >= 2
-select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, count(r.id) as num_ratings, min(r.value) as min_rating, z.zillow_url, z.filenames
+select z.id,
+       substring(z.address from '^(.*), San Francisco') as address,
+       z.bedrooms,
+       z.baths,
+       z.sqft,
+       count(r.id)                                      as num_ratings,
+       min(r.value)                                     as min_rating,
+       z.zillow_url,
+       z.filenames,
+       z.price_history
 from houses_zillowsnapshot z
-left join houses_rating r on z.id = r.zillow_snapshot_id
+         left join houses_rating r on z.id = r.zillow_snapshot_id
 where jsonb_array_length(z.filenames) > 3
 group by z.id
-having (count(r.id) = 0) or (count(r.id) = 1 and min(r.value) > 5) or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
+having (count(r.id) = 1 and min(r.value) > 5)
+    or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
 order by random()
 limit 10;
+-- (count(r.id) = 0)
+
+-- progress query
+-- number of ratings w:
+--   0 ratings
+--   1 rating lte 5
+--   1 record, gt 5
+--   2 records, diff lte 2
+--   2 records, diff gt 2
+--   3 ratings
+-- algo estimates total number of needed ratings:
+--   need 1
+--   need 2
+--   need 3: 3 ratings + 2 records, diff gt 2
+
+select z.id,
+       substring(z.address from '^(.*), San Francisco') as address,
+       z.bedrooms,
+       z.baths,
+       z.sqft,
+       count(r.id)                                      as num_ratings,
+       min(r.value)                                     as min_rating,
+       z.zillow_url,
+       z.filenames
+from houses_zillowsnapshot z
+         left join houses_rating r on z.id = r.zillow_snapshot_id
+where jsonb_array_length(z.filenames) > 3
+group by z.id
+having (count(r.id) = 0)
+    or (count(r.id) = 1 and min(r.value) > 5)
+    or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
+order by random()
+limit 10;
+
+-- leaderboard, with calibration
+select rater.name, count(all_ratings) num_ratings, round(avg(all_ratings.value - ground_truth), 1) calibration
+from houses_rater rater
+join houses_rating all_ratings on all_ratings.rater_id = rater.id
+join houses_zillowsnapshot z on all_ratings.zillow_snapshot_id = z.id
+left join (select z.id, avg(rating.value) as ground_truth
+      from houses_rating rating
+           join houses_rater rater on rating.rater_id = rater.id
+           join houses_zillowsnapshot z on rating.zillow_snapshot_id = z.id
+      group by z.id
+      having count(rating.value) > 1
+) as ground_truths on ground_truths.id = z.id
+group by rater.id
+order by count(all_ratings) desc;
+
+
+select z.id,
+       substring(z.address from '^(.*), San Francisco') as address,
+       z.bedrooms,
+       z.baths,
+       z.sqft,
+       count(r.id)                                      as num_ratings,
+       min(r.value)                                     as min_rating,
+       z.zillow_url,
+       z.filenames
+from houses_zillowsnapshot z
+         left join houses_rating r on z.id = r.zillow_snapshot_id
+where jsonb_array_length(z.filenames) > 3
+group by z.id
+having (count(r.id) = 0)
+    or (count(r.id) = 1 and min(r.value) > 5)
+    or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
+order by random()
+limit 10;
+

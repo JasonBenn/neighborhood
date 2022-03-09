@@ -10,9 +10,7 @@ class RaterAdmin(admin.ModelAdmin):
 class RatingAdmin(admin.ModelAdmin):
     list_display = ("value", "rater_id", "created")
     ordering = ("-created",)
-    list_filter = ('rater__name',)
-
-
+    list_filter = ('rater__name', 'value')
 
     def get_list_filter(self, request):
         return super().get_list_filter(request)

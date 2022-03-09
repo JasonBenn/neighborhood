@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-{% for listing in zillow_listings %}
+{% for listing in listings %}
   <div class="info">
     <div class="title">{{ listing.address }}</div>
     <div>{{ listing.bedrooms|prettify_none }}BR / {{ listing.baths|prettify_none }}Ba</div>
@@ -37,6 +37,14 @@
       {% endfor %}
     </select>
   </div>
+  <div id="leaderboard-container">
+    <div>Leaderboard</div>
+    <div id="leaderboard" {% if is_leaderboard_hidden %}class="hidden"{% endif %}>
+      {% for row in leaderboard %}
+        <div>{{ row.name }}: {{ row.num_ratings }} ({{ row.calibration }})</div>
+      {% endfor %}
+    </div>
+  </div>
   {% for rater in raters %}
     {% if rater.id == active_rater_id %}
       <div><a href="http://localhost:8000/admin/houses/rating/?rater__name={{ rater.name }}" target="_blank">View recent
@@ -46,12 +54,15 @@
   <div class="shadow"></div>
 </div>
 <script>
+  let isLeaderboardHidden = document.querySelector('#leaderboard').className === "hidden"
   document.addEventListener("DOMContentLoaded", function (event) {
     const validRatings = [...Array(10).keys()].map(x => x.toString())
     const skipRating = ' '
     const validInputs = [...validRatings, skipRating]
-    document.addEventListener('keydown', e => {
+
+    function submitRating(e) {
       if (validInputs.includes(e.key) && !e.metaKey && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+        document.removeEventListener('keydown', submitRating)
         const raterId = document.querySelector('#rater').value
         const zillowSnapshotId = document.querySelector('#zillow_snapshot_id').textContent
         let value
@@ -67,13 +78,20 @@
         fetch("/ratings", {
           method: "POST",
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({value, raterId, zillowSnapshotId})
+          body: JSON.stringify({value, raterId, zillowSnapshotId, isLeaderboardHidden})
         }).then(res => {
           location.reload()
         });
 
       }
-    });
+    }
+
+    document.addEventListener('keydown', submitRating);
+
+    document.querySelector('#leaderboard-container').addEventListener('click', e => {
+      isLeaderboardHidden = !isLeaderboardHidden
+      document.querySelector('#leaderboard').className = isLeaderboardHidden ? "hidden" : ""
+    })
   });
 </script>
 </body>
