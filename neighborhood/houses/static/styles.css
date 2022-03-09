@@ -1,0 +1,60 @@
+html, body, ul {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    overscroll-behavior-y: none;
+    padding: 3px;
+    text-align: center;
+    font-family: -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue;
+    color: white;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+img {
+    width: 19.7vw;
+    border-radius: 2px;
+}
+
+.title {
+    /*font: 800 3.1875rem/4.4375rem Spartan;*/
+    /*background: linear-gradient(90deg, #694ED6, #C137A2);*/
+    /*-webkit-background-clip: text;*/
+    /*-webkit-text-fill-color: transparent;*/
+}
+
+.info, .prev-ratings {
+    text-align: right;
+    position: fixed;
+    right: 1em;
+    padding: 1em 0.5em;
+}
+
+.info {
+    top: 1em;
+}
+
+.prev-ratings {
+    bottom: 1em;
+}
+
+a {
+    color: white;
+}
+
+.shadow {
+    background: black;
+    opacity: .5;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    border-radius: 5px;
+}

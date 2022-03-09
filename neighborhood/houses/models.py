@@ -147,22 +147,23 @@ class Owners(BaseModel):
     prior_sale_recording_date = models.DateField(null=True)
 
 
-class ZillowData(BaseModel):
+class ZillowSnapshot(BaseModel):
+    id = models.UUIDField(primary_key=True)
     apn = models.CharField(max_length=12)
     address = models.TextField()
-    scraped_address = models.TextField()
     zillow_url = models.TextField(null=True)
+    scraped_address = models.TextField(null=True)
     zestimate = models.IntegerField(null=True)
     rent_zestimate = models.IntegerField(null=True)
+    price = models.IntegerField(null=True)
     rent = models.IntegerField(null=True)
     bedrooms = models.IntegerField(null=True)
     baths = models.FloatField(null=True)
     sqft = models.IntegerField(null=True)
-    time_scraped = models.DateTimeField(null=True)
     price_history = models.JSONField(null=True)
-    num_units = models.IntegerField(null=True)
-    filenames = models.TextField(null=True)
-    label = models.FloatField(null=True, help_text="0 means a rating was impossible because there were no pictures")
+    time_scraped = models.DateTimeField(null=True)
+    filenames = models.JSONField(null=True)
+    units_info = models.JSONField(null=True)
 
 
 class Addresses(BaseModel):
@@ -178,3 +179,13 @@ class Addresses(BaseModel):
     unit_number = models.CharField(max_length=16, null=True)
     zip_code = models.IntegerField()
     parcel_number = models.CharField(max_length=32, null=True)
+
+
+class Rater(BaseModel):
+    name = models.CharField(max_length=64)
+
+
+class Rating(BaseModel):
+    rater = models.ForeignKey(Rater, on_delete=models.CASCADE)
+    zillow_snapshot = models.ForeignKey(ZillowSnapshot, on_delete=models.CASCADE)
+    label = models.IntegerField(help_text="1 through 10")

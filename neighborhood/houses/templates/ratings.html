@@ -1,10 +1,42 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-<h1>sup</h1>
+<div class="info">
+  <div class="title">615 Page St</div>
+  <div>10BR / 5.5Ba</div>
+  <div>5,135 sqft</div>
+  <div><a href="#" target="_blank">Zillow</a></div>
+  <div class="shadow"></div>
+</div>
+<div class="prev-ratings">
+  <div>Previous ratings</div>
+  <div>
+    <span>Rating as</span>
+    <select name="rater" id="rater">
+      <option value="1">Jason</option>
+      <option value="2">Rose</option>
+      <option value="3">Michael</option>
+      <option value="4">Jeremy</option>
+    </select>
+  </div>
+  <div><a href="#">615 Page St</a> 3</div>
+  <div><a href="#">603 Waller St</a> 4</div>
+  <div><a href="#">603 Waller St</a> 1</div>
+  <div><a href="#">603 Waller St</a> 2</div>
+  <div><a href="#">603 Waller St</a> 5</div>
+  <div class="shadow"></div>
+</div>
+<ul>
+  {% for filename in filenames %}
+    <img src="{% static filename %}" alt="">
+  {% endfor %}
+</ul>
 </body>
 </html>

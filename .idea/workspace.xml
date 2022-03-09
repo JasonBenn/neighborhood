@@ -5,20 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b2cb046-4797-47ef-94ed-10ed6ceb4eb0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/neighborhood/data/rating_dummy.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/neighborhood/houses/static/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/management/commands/load_addresses.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/management/commands/load_addresses.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/management/commands/load_zillow_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/management/commands/load_zillow_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/05232e0e0d6505bc065c37bb8e5f92c2-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/05232e0e0d6505bc065c37bb8e5f92c2-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/094c900dd0eb9046473bcd4c2486f9c8-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/094c900dd0eb9046473bcd4c2486f9c8-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/1a5be7b0519bcd5908b7290350fc7d2e-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/1a5be7b0519bcd5908b7290350fc7d2e-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/24ce59e25b6fac36586f6a8dc80fca73-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/24ce59e25b6fac36586f6a8dc80fca73-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/2a74a65e505aed0703c63ec0c43029a2-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/2a74a65e505aed0703c63ec0c43029a2-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/2ac50e919d27c538b3eaa63eb1d677d9-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/2ac50e919d27c538b3eaa63eb1d677d9-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/4a571e0f2caec64fc04e0b0531679b82-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/4a571e0f2caec64fc04e0b0531679b82-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/53869d81922c4ba02a8a53b4f493373a-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/53869d81922c4ba02a8a53b4f493373a-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/54ed1d54b3bd1c46e00008be6d01f826-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/54ed1d54b3bd1c46e00008be6d01f826-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/5cb799d559371c8d6bd3432f4abd550a-cc_ft_960.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/5cb799d559371c8d6bd3432f4abd550a-cc_ft_960.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/67bf87955dc04ed0fe3020fd325cdf50-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/67bf87955dc04ed0fe3020fd325cdf50-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/714b1f74266b4d9d53edd6986ced067c-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/714b1f74266b4d9d53edd6986ced067c-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/716fb38472c457f53a59b52488c934ad-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/716fb38472c457f53a59b52488c934ad-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/7af8528ef2ee5cc41a787a05ecdc9701-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/7af8528ef2ee5cc41a787a05ecdc9701-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/9e838a86bd71cc0ba72c6350a3b99958-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/9e838a86bd71cc0ba72c6350a3b99958-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/b05ca4b9170d33a9e26079a163cee9f5-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/b05ca4b9170d33a9e26079a163cee9f5-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/c211aa23cb74ba44c2345b2b3d8dc939-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/c211aa23cb74ba44c2345b2b3d8dc939-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/c3fe2f7e225ad8d7f8ec73b9fe4d1cdb-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/c3fe2f7e225ad8d7f8ec73b9fe4d1cdb-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/d03ff10f9ec291dcb0a520317757bf38-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/d03ff10f9ec291dcb0a520317757bf38-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/f0bbe086eb258a8250bee171341d3fb3-cc_ft_576.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/f0bbe086eb258a8250bee171341d3fb3-cc_ft_576.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/data/rating_dummy/test.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/houses/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/neighborhood/houses/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/houses/templates/ratings.html" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/templates/ratings.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/neighborhood/houses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/neighborhood/neighborhood/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/neighborhood/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/one-liners.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/one-liners.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/neighborhood/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/neighborhood/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/queries.sql" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/queries.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -66,11 +91,16 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/neighborhood/houses/management/commands" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/neighborhood/houses" />
+      <recent name="$PROJECT_DIR$/neighborhood/data" />
+      <recent name="$PROJECT_DIR$/neighborhood/static" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -81,7 +111,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1646608922325</updated>
-      <workItem from="1646608928737" duration="14593000" />
+      <workItem from="1646608928737" duration="22825000" />
     </task>
     <servers />
   </component>
