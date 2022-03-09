@@ -159,10 +159,10 @@ order by addrs.address
 --   0 records
 --   1 record, if rated 5 or higher
 --   2 records, if diff b/w them is >= 2
-select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, z.zillow_url, z.filenames, count(r.id), min(r.label)
+select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, z.zillow_url, z.filenames, count(r.id), min(r.value)
 from houses_zillowsnapshot z
 left join houses_rating r on z.id = r.zillow_snapshot_id
-where z.filenames is not null
+where jsonb_array_length(z.filenames) > 3
 group by z.id
 order by random()
 limit 10;

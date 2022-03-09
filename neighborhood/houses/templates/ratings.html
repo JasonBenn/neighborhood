@@ -15,7 +15,7 @@
     <div>{{ listing.bedrooms|prettify_none }}BR / {{ listing.baths|prettify_none }}Ba</div>
     <div>{{ listing.sqft|maybe_intcomma|prettify_none }} sqft</div>
     <div><a href="{{ listing.zillow_url }}" target="_blank">Zillow</a></div>
-    <div class="hidden" id="zillow_scrape_id">{{ listing.id }}</div>
+    <div class="hidden" id="zillow_snapshot_id">{{ listing.id }}</div>
     <div class="shadow"></div>
   </div>
   <ul>
@@ -37,12 +37,44 @@
       {% endfor %}
     </select>
   </div>
-  {#  <div><a href="#">615 Page St</a> 3</div>#}
-  {#  <div><a href="#">603 Waller St</a> 4</div>#}
-  {#  <div><a href="#">603 Waller St</a> 1</div>#}
-  {#  <div><a href="#">603 Waller St</a> 2</div>#}
-  {#  <div><a href="#">603 Waller St</a> 5</div>#}
+  {% for rater in raters %}
+    {% if rater.id == active_rater_id %}
+      <div><a href="http://localhost:8000/admin/houses/rating/?rater__name={{ rater.name }}" target="_blank">View recent
+        ratings</a></div>
+    {% endif %}
+  {% endfor %}
   <div class="shadow"></div>
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function (event) {
+    const validRatings = [...Array(10).keys()].map(x => x.toString())
+    const skipRating = ' '
+    const validInputs = [...validRatings, skipRating]
+    document.addEventListener('keydown', e => {
+      if (validInputs.includes(e.key) && !e.metaKey && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+        const raterId = document.querySelector('#rater').value
+        const zillowSnapshotId = document.querySelector('#zillow_snapshot_id').textContent
+        let value
+        if (e.key === skipRating) {
+          value = null
+        } else {
+          value = Number(e.key)
+          if (value === 0) {
+            value = 10
+          }
+        }
+        console.log('valid!', value, raterId, zillowSnapshotId, e)
+        fetch("/ratings", {
+          method: "POST",
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({value, raterId, zillowSnapshotId})
+        }).then(res => {
+          location.reload()
+        });
+
+      }
+    });
+  });
+</script>
 </body>
 </html>

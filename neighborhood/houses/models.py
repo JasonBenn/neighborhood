@@ -188,4 +188,4 @@ class Rater(BaseModel):
 class Rating(BaseModel):
     rater = models.ForeignKey(Rater, on_delete=models.CASCADE)
     zillow_snapshot = models.ForeignKey(ZillowSnapshot, on_delete=models.CASCADE)
-    label = models.IntegerField(help_text="1 through 10")
+    value = models.IntegerField(null=True, help_text="1 through 10, or None if not enough info to tell")

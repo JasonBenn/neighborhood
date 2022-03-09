@@ -1,17 +1,19 @@
 import json
 from pprint import pprint
+from uuid import UUID
 
+from django.http import HttpResponse
 from django.shortcuts import render
 
-from houses.models import Rater
+from houses.models import Rater, Rating
 
 
 def index(request):
     from django.db import connection
-    raw_query = """select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, z.zillow_url, z.filenames, count(r.id), min(r.label)
+    raw_query = """select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, z.zillow_url, z.filenames, count(r.id), min(r.value)
     from houses_zillowsnapshot z
     left join houses_rating r on z.id = r.zillow_snapshot_id
-    where z.filenames is not null
+    where jsonb_array_length(z.filenames) > 3
     group by z.id
     order by random()
     limit 1;
@@ -35,4 +37,13 @@ def index(request):
     })
 
 
-# request.session['active_rater_id'] = rater_id
+def create_rating(request):
+    data = json.loads(request.body)
+    rater_id = int(data['raterId'])
+    Rating.objects.create(
+        rater_id=rater_id,
+        zillow_snapshot_id=UUID(data['zillowSnapshotId']),
+        value=int(data['value']) if data['value'] else None,
+    )
+    request.session['active_rater_id'] = rater_id
+    return HttpResponse(status=204)
