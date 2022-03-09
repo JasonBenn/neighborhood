@@ -7,3 +7,5 @@ psycopg2
 ipdb
 tqdm
 django-storages
+python-dotenv
+boto3

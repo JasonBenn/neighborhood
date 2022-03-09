@@ -1,3 +1,4 @@
+import json
 from pprint import pprint
 
 from django.shortcuts import render
@@ -21,7 +22,9 @@ def index(request):
     results = cursor.fetchall()
     colnames = [desc[0] for desc in cursor.description]
     zillow_listings = [dict(zip(colnames, x)) for x in results]
-    pprint(zillow_listings)
+    zillow_listings = [{**x, **{
+        'filenames': json.loads(x['filenames'])
+    }} for x in zillow_listings]
 
     raters = Rater.objects.all()
 

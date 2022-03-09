@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b2cb046-4797-47ef-94ed-10ed6ceb4eb0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/neighborhood/houses/templatetags/view_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/management/commands/load_zillow_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/management/commands/load_zillow_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/management/commands/load_zillow_data_v2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/static/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/templates/ratings.html" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/templates/ratings.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/tests.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/neighborhood/houses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/neighborhood/neighborhood/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/neighborhood/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/queries.sql" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/queries.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/one-liners.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/one-liners.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +96,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1646608922325</updated>
-      <workItem from="1646608928737" duration="31354000" />
+      <workItem from="1646608928737" duration="33471000" />
     </task>
     <servers />
   </component>

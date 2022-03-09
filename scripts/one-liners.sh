@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Deploying
+~/.pyenv/shims/python neighborhood/manage.py collectstatic  # push new styles to s3
+
 # Env
 ~/.pyenv/shims/pip install -r requirements.txt
 ~/.pyenv/shims/pip freeze > requirements-frozen.txt
@@ -10,5 +13,3 @@
 
 # Database
 pg_dump neighborhood --table houses_zillowdata -f /Users/jasonbenn/code/neighborhood/neighborhood/data/backups/2022-03-07_zillow.sql
-
-
