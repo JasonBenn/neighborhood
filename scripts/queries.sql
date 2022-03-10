@@ -313,3 +313,23 @@ select scraped_address, count(scraped_address) as times_scraped, min(time_scrape
 from houses_zillowsnapshot
 group by scraped_address
 having count(scraped_address) > 1;
+
+
+select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, count(r.id) as num_ratings, min(r.value) as min_rating, z.zillow_url, z.filenames
+from zillow_addresses z
+left join houses_rating r on z.id = r.zillow_snapshot_id
+where jsonb_array_length(z.filenames) > 3
+and (count(r.id) = 0) or (count(r.id) = 1 and min(r.value) > 5) or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
+order by random()
+limit 5;
+
+
+select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, r.num_ratings, r.min_rating, z.zillow_url, z.filenames
+from zillow_addresses z
+left join (
+    select zil.id, count(rs.id) as num_ratings, min(rs.value) as min_rating
+    from zillow_addresses zil
+        join houses_rating rs on zil.id = rs.zillow_snapshot_id
+    group by zil.id
+    ) as r on r.id = z.id
+;

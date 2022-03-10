@@ -24,12 +24,16 @@ order by count(all_ratings) desc;
 """
 
 NEXT_LISTINGS = """
-select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, count(r.id) as num_ratings, min(r.value) as min_rating, z.zillow_url, z.filenames
+select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, r.num_ratings, r.min_rating, z.zillow_url, z.filenames
 from zillow_addresses z
-left join houses_rating r on z.id = r.zillow_snapshot_id
+left join (
+    select zil.id, count(rs.id) as num_ratings, min(rs.value) as min_rating, max(rs.value) as max_rating
+    from zillow_addresses zil
+        left join houses_rating rs on zil.id = rs.zillow_snapshot_id
+    group by zil.id
+    ) as r on r.id = z.id
 where jsonb_array_length(z.filenames) > 3
-group by z.id
-having (count(r.id) = 0) or (count(r.id) = 1 and min(r.value) > 5) or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
+and (r.num_ratings = 0) or (r.num_ratings = 1 and r.min_rating > 5) or (r.num_ratings = 2 and (r.max_rating - r.min_rating) >= 2)
 order by random()
-limit 1;
+limit 5;
 """
