@@ -28,6 +28,7 @@ def index(request):
 
 def analytics(request):
     houses_by_type = fetchall(NUM_HOUSES_BY_TYPE)
+    print(houses_by_type)
     houses_by_type.append({"use_definition": "Total", "count": sum([x["count"] for x in houses_by_type])})
     return render(request, "analytics.html", {
         "houses_by_type": houses_by_type

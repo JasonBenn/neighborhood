@@ -169,7 +169,7 @@ select z.id,
        z.zillow_url,
        z.filenames,
        z.price_history
-from houses_zillowsnapshot z
+from zillow_addresses z
          left join houses_rating r on z.id = r.zillow_snapshot_id
 where jsonb_array_length(z.filenames) > 3
 group by z.id
@@ -189,7 +189,7 @@ select z.id,
        min(r.value)                                     as min_rating,
        z.zillow_url,
        z.filenames
-from houses_zillowsnapshot z
+from zillow_addresses z
          left join houses_rating r on z.id = r.zillow_snapshot_id
 where jsonb_array_length(z.filenames) > 3
 group by z.id
@@ -203,11 +203,11 @@ limit 10;
 select rater.name, count(all_ratings) num_ratings, round(avg(all_ratings.value - ground_truth), 1) calibration
 from houses_rater rater
          join houses_rating all_ratings on all_ratings.rater_id = rater.id
-         join houses_zillowsnapshot z on all_ratings.zillow_snapshot_id = z.id
+         join zillow_addresses z on all_ratings.zillow_snapshot_id = z.id
          left join (select z.id, avg(rating.value) as ground_truth
                     from houses_rating rating
                              join houses_rater rater on rating.rater_id = rater.id
-                             join houses_zillowsnapshot z on rating.zillow_snapshot_id = z.id
+                             join zillow_addresses z on rating.zillow_snapshot_id = z.id
                     group by z.id
                     having count(rating.value) > 1
 ) as ground_truths on ground_truths.id = z.id
@@ -232,7 +232,7 @@ order by count(all_ratings) desc;
 select rating_counts.listing_ratings as num_ratings, rating_counts.count
 from (
          select count(rating) listing_ratings
-         from houses_zillowsnapshot z
+         from zillow_addresses z
                   left join houses_rating rating on z.id = rating.zillow_snapshot_id
          where jsonb_array_length(z.filenames) > 3
          group by z.id
@@ -285,11 +285,11 @@ select houses.apn,
        jsonb_array_length(price_history) / 4,
        jsonb_array_length(filenames)
 from houses_neighborhoodbuildings houses
-         left join houses_zillowsnapshot zil on houses.apn = zil.apn
+         left join zillow_addresses zil on houses.apn = zil.apn
 left join (
     select scraped_address, count(ratings.id)
     from houses_rating ratings
-    join houses_zillowsnapshot hz on ratings.zillow_snapshot_id = hz.id
+    join zillow_addresses hz on ratings.zillow_snapshot_id = hz.id
     group by scraped_address
     ) as rating_counts on zil.scraped_address = ratings_counts.scraped_address
 where scraped_address not like '%-%'
@@ -298,7 +298,7 @@ order by houses.apn, zil.address;
 -- compound addrs vs not by housing type
 select use_code, scraped_address like '%-%' as compound_addr, count(houses.apn) count
 from houses_neighborhoodbuildings houses
-         left join houses_zillowsnapshot zil on houses.apn = zil.apn
+         left join zillow_addresses zil on houses.apn = zil.apn
          left join houses_taxassessordata ht on zil.apn = ht.apn
 group by use_code, compound_addr
 order by count desc;
