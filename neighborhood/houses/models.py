@@ -189,3 +189,10 @@ class Rating(BaseModel):
     rater = models.ForeignKey(Rater, on_delete=models.CASCADE)
     zillow_snapshot = models.ForeignKey(ZillowSnapshot, on_delete=models.CASCADE)
     value = models.IntegerField(null=True, help_text="1 through 10, or None if not enough info to tell")
+
+
+class AssessorClassCodes(BaseModel):
+    use_code = models.CharField(max_length=4)
+    use_definition = models.TextField()
+    property_class_code = models.CharField(max_length=4)
+    property_class_definition = models.TextField()

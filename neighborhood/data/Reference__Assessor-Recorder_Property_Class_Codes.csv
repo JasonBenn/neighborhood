@@ -1,0 +1,110 @@
+Use Code,Use Definition,Class Code,Class Definition
+SRES,Single Family Residential,COS,Coop Units Segregated
+SRES,Single Family Residential,D,Dwelling
+SRES,Single Family Residential,DBM,Dwelling BMR
+SRES,Single Family Residential,LZ,Live/Work Condominium
+SRES,Single Family Residential,LZBM,Live/Work Condominium BMR
+SRES,Single Family Residential,TH,Town House
+SRES,Single Family Residential,THBM,Town House BMR
+SRES,Single Family Residential,Z,Condominium
+SRES,Single Family Residential,ZBM,Condominium BMR
+COMM,Commercial Misc,TS,Timeshare
+COMM,Commercial Misc,PD,PUD (Planned Unit Development)
+COMM,Commercial Misc,TSF,Time Share Fractional
+COMM,Commercial Misc,TSU,Time Share Unsegregated
+MISC,Miscellaneous/Mixed-Use,UWL,Under Water Lot
+MISC,Miscellaneous/Mixed-Use,V,Vacant Lot
+MISC,Miscellaneous/Mixed-Use,VR,Vacant Lot - Restrictions
+MRES,Multi-Family Residential,A,Apartment
+MRES,Multi-Family Residential,CO,Coop Units Unsegregated
+MRES,Multi-Family Residential,DA,Dwellings - Apartments
+MRES,Multi-Family Residential,DD,2 Dwellings on One Parcel
+MRES,Multi-Family Residential,DF,1 Flat & Dwelling-1 Parcel
+MRES,Multi-Family Residential,F,Flats & Duplex
+MRES,Multi-Family Residential,FA,1 Flat & 1 Apt Bldg-1 Parcel
+MRES,Multi-Family Residential,F2,Flat & Store
+MRES,Multi-Family Residential,OA,Office and Apartments
+MRES,Multi-Family Residential,TIA,TI Apartment
+MRES,Multi-Family Residential,TIF,TI Flats & Duplex
+MRES,Multi-Family Residential,XV,Single Struct on Multi Lot(D & F's only)
+COMH,Commercial Hotel,H,Hotel
+COMH,Commercial Hotel,HC,Hotel Commercial (H2w/Com)
+COMH,Commercial Hotel,H1,Hotel
+COMH,Commercial Hotel,H2,Hotels - Other
+COMH,Commercial Hotel,M,Motels
+COMH,Commercial Hotel,RH,Residential Hotel & SRO
+COMH,Commercial Hotel,RH1,Retail & Hotel
+COMM,Commercial Misc,AC,Apartmnt & Commercial Store
+COMM,Commercial Misc,E,Schools
+COMM,Commercial Misc,G,Garages (Commercial)
+COMM,Commercial Misc,GC,Golf Course
+COMM,Commercial Misc,GZ,Garage Condominium
+COMM,Commercial Misc,MIX,Mixed use
+COMM,Commercial Misc,N1,Hospitals
+COMM,Commercial Misc,N2,Convalescent/Nursing Homes
+COMM,Commercial Misc,PL,Parking Lot
+COMM,Commercial Misc,PZ,Parking Stall Condominium
+COMM,Commercial Misc,S,Gas Station
+COMM,Commercial Misc,T,Theatres
+COMM,Commercial Misc,U,"Clubs,Lodges,Fraternal Organizations"
+COMM,Commercial Misc,W,"Churches,Convents,Rectories"
+COMO,Commercial Office,O,Office
+COMO,Commercial Office,OAH,Office - High Class A
+COMO,Commercial Office,OAT,"Office - ""Trophy"" Class A"
+COMO,Commercial Office,OBH,Office - High Class B
+COMO,Commercial Office,OBM,Office - Middle Class B
+COMO,Commercial Office,OCH,Office - High Class C
+COMO,Commercial Office,OCL,Office - Low Class C
+COMO,Commercial Office,OCM,Office - Middle Class C
+COMO,Commercial Office,OMD,Medical- dental Office Building
+COMO,Commercial Office,OZ,Office - Condominium
+COMR,Commercial Retail,B,Bank
+COMR,Commercial Retail,BZ,Bank Condominium
+COMR,Commercial Retail,C,Commercial Stores
+COMR,Commercial Retail,CD,Commercial Department Stores
+COMR,Commercial Retail,CM,Commercial/Mixed use
+COMR,Commercial Retail,CZ,Commercial Store Condo
+COMR,Commercial Retail,C1,Shopping Center
+COMR,Commercial Retail,EC,Entertainment Complex
+COMR,Commercial Retail,OC,Office with Major Retail Units
+GOVT,Government,CP,City Property
+GOVT,Government,P,Public Buildings (Govt)
+GOVT,Government,RDAP,Redevelopment Agency Property
+GOVT,Government,SP,State of California Property
+GOVT,Government,USP,U.S. Government Property
+GOVT,Government,Y,Port Commission Property
+IND,Industrial,I,Industrial
+IND,Industrial,IDC,Industrial Data Center
+IND,Industrial,IW,Industial Warehouse
+IND,Industrial,IX,Industrial Mixed/Other Use
+IND,Industrial,IZ,Industrial Condominium
+MISC,Miscellaneous/Mixed-Use,MB,Mission Bay
+MISC,Miscellaneous/Mixed-Use,X,Misc
+MRES,Multi-Family Residential,F5,Flats 5 to 14 units 
+MISC,Miscellaneous/Mixed-Use,VPUB,Vacant Lot Public Use
+MRES,Multi-Family Residential,DCON,Legal Multi-Family Con to SFR 
+MISC,Miscellaneous/Mixed-Use,VCI,Vacant Lot Comm and Ind 
+MRES,Multi-Family Residential,TIC,TIC Bldg 4 units or less 
+MISC,Miscellaneous/Mixed-Use,VCIX        ,Vacant Lot Comm and Ind w/ Restriction   
+MRES,Multi-Family Residential,FS,Flat & Store 4 units or less
+MRES,Multi-Family Residential,TIC5        ,TIC Bldg 5 to 14 units                  
+SRES,Single Family Residential,OZEU,Office Condo Economic Unit 
+SRES,Single Family Residential,ZEU,Condominium Economic Unit 
+MRES,Multi-Family Residential,OA15,Office and Apartments 15 units +
+COMM,Commercial Misc,GCU         ,Golf Course                             
+MRES,Multi-Family Residential,FS15,Flat & Store 15 units +
+MRES,Multi-Family Residential,F15,Flats 15 units +
+MISC,Miscellaneous/Mixed-Use,VA15,Vacant land- residential 15+ units 
+COMO,Commercial Office,OAL         ,Office - Low Class A                     
+MRES,Multi-Family Residential,A5,Apartment 5 to 14 Units
+MRES,Multi-Family Residential,FA5,1 Flat & 1 Apt - 1 Parcel 5 to 14 units 
+MRES,Multi-Family Residential,DA15,Dwellings - Apt 15 units or more 
+MRES,Multi-Family Residential,TI15,TIC Bldg 15 units + 
+MRES,Multi-Family Residential,FS5,Flat & Store 5 to 14 units
+COMO,Commercial Office,O35,Office Portion Leased of 35 or More 
+MRES,Multi-Family Residential,DA5,Dwellings - Apt 5 to 14 units 
+GOVT,Government,UCP,University of California Property
+MRES,Multi-Family Residential,DD5,2 Dwellings on 1 Parcel 5 to 14 units 
+MRES,Multi-Family Residential,A15,Apartment 15 Units or more 
+MISC,Miscellaneous/Mixed-Use,VRX,Vacant Lot Residential w/ Restriction 
+MRES,Multi-Family Residential,OA5,Office and Apartments 5 to 14 units

@@ -274,3 +274,10 @@ select r.zillow_snapshot_id, count(r.id), max(r.value), min(r.value)
 from houses_rating r
 group by r.zillow_snapshot_id
 having (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2);
+
+-- Create assessor_use_codes mapping
+CREATE MATERIALIZED VIEW assessor_use_codes as
+(
+select distinct use_code, use_definition
+from houses_assessorclasscodes
+    );

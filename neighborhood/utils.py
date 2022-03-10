@@ -2,6 +2,8 @@ import re
 
 import datetime
 
+from django.db import connection
+
 
 def currency_to_int(dollars: str) -> int:
     if isinstance(dollars, float):
@@ -22,3 +24,11 @@ def parse_date(date: str):
 
 def format_address(addr: str) -> str:
     return re.sub("^([^,]*),? San Francisco", "\g<1>, San Francisco", re.sub("\s", " ", addr.title())).replace(" Ca ", " CA ")
+
+
+def fetchall(sql):
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    raw_results = cursor.fetchall()
+    colnames = [desc[0] for desc in cursor.description]
+    return [dict(zip(colnames, x)) for x in raw_results]

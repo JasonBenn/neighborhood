@@ -7,8 +7,35 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <style>
+      table {
+          text-align: left;
+      }
+      #houses_by_type {
+          float: left;
+      }
+  </style>
 </head>
 <body>
-<h1>hi</h1>
+<h1>top secret intelligence</h1>
+<div id="houses_by_type">
+  <h2>houses by type</h2>
+  <table>
+    <thead>
+    <tr>
+      <td>Use definition</td>
+      <td>Count</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in houses_by_type %}
+      <tr>
+        <td>{{ row.use_definition }}</td>
+        <td>{{ row.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
 </body>
 </html>
