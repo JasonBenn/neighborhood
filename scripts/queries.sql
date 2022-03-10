@@ -179,18 +179,6 @@ order by random()
 limit 10;
 -- (count(r.id) = 0)
 
--- progress query
--- number of ratings w:
---   0 ratings
---   1 rating lte 5
---   1 record, gt 5
---   2 records, diff lte 2
---   2 records, diff gt 2
---   3 ratings
--- algo estimates total number of needed ratings:
---   need 1
---   need 2
---   need 3: 3 ratings + 2 records, diff gt 2
 
 select z.id,
        substring(z.address from '^(.*), San Francisco') as address,
@@ -214,35 +202,75 @@ limit 10;
 -- leaderboard, with calibration
 select rater.name, count(all_ratings) num_ratings, round(avg(all_ratings.value - ground_truth), 1) calibration
 from houses_rater rater
-join houses_rating all_ratings on all_ratings.rater_id = rater.id
-join houses_zillowsnapshot z on all_ratings.zillow_snapshot_id = z.id
-left join (select z.id, avg(rating.value) as ground_truth
-      from houses_rating rating
-           join houses_rater rater on rating.rater_id = rater.id
-           join houses_zillowsnapshot z on rating.zillow_snapshot_id = z.id
-      group by z.id
-      having count(rating.value) > 1
+         join houses_rating all_ratings on all_ratings.rater_id = rater.id
+         join houses_zillowsnapshot z on all_ratings.zillow_snapshot_id = z.id
+         left join (select z.id, avg(rating.value) as ground_truth
+                    from houses_rating rating
+                             join houses_rater rater on rating.rater_id = rater.id
+                             join houses_zillowsnapshot z on rating.zillow_snapshot_id = z.id
+                    group by z.id
+                    having count(rating.value) > 1
 ) as ground_truths on ground_truths.id = z.id
 group by rater.id
 order by count(all_ratings) desc;
 
 
-select z.id,
-       substring(z.address from '^(.*), San Francisco') as address,
-       z.bedrooms,
-       z.baths,
-       z.sqft,
-       count(r.id)                                      as num_ratings,
-       min(r.value)                                     as min_rating,
-       z.zillow_url,
-       z.filenames
-from houses_zillowsnapshot z
-         left join houses_rating r on z.id = r.zillow_snapshot_id
-where jsonb_array_length(z.filenames) > 3
-group by z.id
-having (count(r.id) = 0)
-    or (count(r.id) = 1 and min(r.value) > 5)
-    or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
-order by random()
-limit 10;
+-- progress query
+-- number of ratings w:
+--   0 ratings
+--   1 rating lte 5
+--   1 record, gt 5
+--   2 records, diff lte 2
+--   2 records, diff gt 2
+--   3 ratings
+-- algo estimates total number of needed ratings:
+--   need 1
+--   need 2:
+--   need 3: 2 records, diff gt 2, 3 ratings
 
+-- start with number of listings that have > 3 images
+select rating_counts.listing_ratings as num_ratings, rating_counts.count
+from (
+         select count(rating) listing_ratings
+         from houses_zillowsnapshot z
+                  left join houses_rating rating on z.id = rating.zillow_snapshot_id
+         where jsonb_array_length(z.filenames) > 3
+         group by z.id
+     ) as rating_counts
+group by rating_counts.listing_ratings
+order by num_ratings;
+
+select count(*)
+from houses_rating;
+
+select min(rating.created)
+from houses_rating as rating
+group by rating.zillow_snapshot_id;
+
+-- num single-rated that need another rating
+select count(*)
+from (
+         select rating.zillow_snapshot_id, min(rating.created) first_created
+         from houses_rating as rating
+         group by rating.zillow_snapshot_id
+         having count(*) = 1
+     ) as single_rated
+join houses_rating rating on rating.zillow_snapshot_id = single_rated.zillow_snapshot_id and rating.created = single_rated.first_created
+where rating.value > 5;
+
+-- num double-rated that need a 3rd rating
+select count(*)
+from (
+         select rating.zillow_snapshot_id, min(rating.created) first_created
+         from houses_rating as rating
+         group by rating.zillow_snapshot_id
+         having count(*) = 1
+     ) as single_rated
+join houses_rating rating on rating.zillow_snapshot_id = single_rated.zillow_snapshot_id and rating.created = single_rated.first_created
+where rating.value > 5;
+
+-- double rated, need a 3rd
+select r.zillow_snapshot_id, count(r.id), max(r.value), min(r.value)
+from houses_rating r
+group by r.zillow_snapshot_id
+having (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2);

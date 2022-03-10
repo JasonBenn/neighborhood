@@ -65,6 +65,10 @@ def index(request):
     })
 
 
+def analytics(request):
+    return render(request, "analytics.html", {})
+
+
 def create_rating(request):
     data = json.loads(request.body)
     rater_id = int(data['raterId'])
