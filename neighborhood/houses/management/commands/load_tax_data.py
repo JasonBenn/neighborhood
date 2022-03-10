@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('truncating TaxAssessorData...')
-        TaxAssessorData.truncate()
+        TaxAssessorData.objects.all().delete()
         print('loading GEOJSON...')
         df = gpd.read_file(str(BASE_DIR / 'data/tax_assessor_property_rolls_2019.geojson'))
         for index, row in tqdm(df.replace({np.nan: None}).iterrows()):

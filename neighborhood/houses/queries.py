@@ -7,6 +7,13 @@ group by use_definition
 order by count desc;
 """
 
+NUM_HOUSES_BY_TYPE = """
+select *
+from houses_neighborhoodbuildings
+         join houses_taxassessordata tx on houses_neighborhoodbuildings.apn = tx.apn
+         join assessor_use_codes ha on tx.use_code = ha.use_code;
+"""
+
 LEADERBOARD = """
 select rater.name, count(all_ratings) num_ratings, round(avg(all_ratings.value - ground_truth), 1) calibration
 from houses_rater rater

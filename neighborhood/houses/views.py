@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 import utils
-from houses.models import Rater, Rating
+from houses.models import Rater, Rating, ZillowSnapshot
 from django.db import connection
 
 from houses.queries import LEADERBOARD, NEXT_LISTINGS, NUM_HOUSES_BY_TYPE
@@ -37,9 +37,11 @@ def analytics(request):
 def create_rating(request):
     data = json.loads(request.body)
     rater_id = int(data['raterId'])
+    zillow_id = UUID(data['zillowSnapshotId'])
     Rating.objects.create(
         rater_id=rater_id,
-        zillow_snapshot_id=UUID(data['zillowSnapshotId']),
+        zillow_snapshot_id=zillow_id,
+        zillow_scraped_address=ZillowSnapshot.objects.get(id=zillow_id).scraped_address,
         value=int(data['value']) if data['value'] else None,
     )
     request.session['active_rater_id'] = rater_id

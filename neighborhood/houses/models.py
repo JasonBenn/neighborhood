@@ -9,11 +9,6 @@ class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    @classmethod
-    def truncate(cls):
-        with connection.cursor() as cursor:
-            cursor.execute('TRUNCATE TABLE {} CASCADE'.format(cls._meta.db_table))
-
 
 class TaxAssessorData(BaseModel):
     """https://data.sfgov.org/Housing-and-Buildings/Assessor-Historical-Secured-Property-Tax-Rolls/wv5m-vpq2"""
@@ -166,6 +161,12 @@ class ZillowSnapshot(BaseModel):
     units_info = models.JSONField(null=True)
 
 
+class ZillowAddresses(ZillowSnapshot):
+    class Meta:
+        managed = False
+        db_table = 'zillow_addresses'
+
+
 class Addresses(BaseModel):
     apn = models.CharField(max_length=12)
     eas_fullid = models.CharField(max_length=20)
@@ -186,8 +187,9 @@ class Rater(BaseModel):
 
 
 class Rating(BaseModel):
-    rater = models.ForeignKey(Rater, on_delete=models.CASCADE)
-    zillow_snapshot = models.ForeignKey(ZillowSnapshot, on_delete=models.CASCADE)
+    rater = models.ForeignKey(Rater, on_delete=models.SET_NULL, null=True)
+    zillow_snapshot = models.ForeignKey(ZillowSnapshot, on_delete=models.SET_NULL, null=True)
+    zillow_scraped_address = models.TextField()
     value = models.IntegerField(null=True, help_text="1 through 10, or None if not enough info to tell")
 
 

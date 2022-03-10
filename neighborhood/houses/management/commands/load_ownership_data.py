@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('truncating Owners...')
-        Owners.truncate()
+        Owners.objects.all().delete()
         print('loading csv...')
         csv_files = glob(str(BASE_DIR / 'data/mls_*/*.csv'))
         print(f'processing {len(csv_files)} files...')

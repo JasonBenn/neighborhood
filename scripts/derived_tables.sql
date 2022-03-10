@@ -30,3 +30,20 @@ from houses_neighborhoodbuildings zn
 DROP MATERIALIZED VIEW houses_aggregated;
 
 REFRESH MATERIALIZED VIEW houses_aggregated;
+
+
+-- Create assessor_use_codes mapping
+CREATE MATERIALIZED VIEW assessor_use_codes as
+(
+select distinct use_code, use_definition
+from houses_assessorclasscodes
+    );
+
+-- Most recent profile for each Zillow scraped_address.
+CREATE MATERIALIZED VIEW zillow_addresses as (
+select distinct on (scraped_address) *
+from houses_zillowsnapshot
+order by scraped_address, time_scraped desc
+);
+
+DROP MATERIALIZED VIEW zillow_addresses;

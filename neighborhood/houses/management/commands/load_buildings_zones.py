@@ -1,16 +1,11 @@
 import re
-
 from uuid import UUID
 
-import json
-
 import pandas as pd
-import numpy as np
-import geopandas as gpd
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
-from houses.models import NeighborhoodBuildings, TaxAssessorData, ZONE_LOOKUP
+from houses.models import NeighborhoodBuildings, ZONE_LOOKUP
 from neighborhood.settings import BASE_DIR
 
 
@@ -18,7 +13,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('truncating NeighborhoodBuildings...')
-        NeighborhoodBuildings.truncate()
+        NeighborhoodBuildings.objects.all().delete()
         print('loading csv...')
         df = pd.read_csv(str(BASE_DIR / 'data/dbv_buildings_zones.csv'))
         for index, row in tqdm(df.iterrows()):

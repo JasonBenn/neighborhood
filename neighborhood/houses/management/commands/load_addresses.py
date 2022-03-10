@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('truncating Addresses...')
-        Addresses.truncate()
+        Addresses.objects.all().delete()
         print('loading csv...')
         df = gpd.read_file(str(BASE_DIR / 'data/Addresses with Units - Enterprise Addressing System.geojson'))
         for index, row in tqdm(df.iterrows()):

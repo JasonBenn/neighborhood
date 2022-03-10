@@ -1,23 +1,23 @@
 import json
 import uuid
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import pytz
+from dateutil import parser
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
 from houses.models import ZillowSnapshot
 from neighborhood.settings import BASE_DIR
 from utils import currency_to_int, format_address
-from dateutil import parser
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('truncating ZillowData...')
-        ZillowSnapshot.truncate()
+        ZillowSnapshot.objects.all().delete()
         print('loading csv...')
         df = pd.read_csv(str(BASE_DIR / 'data/page st scraping test - main.csv'))
         for index, row in tqdm(df.replace({np.nan: None}).iterrows()):
@@ -45,3 +45,5 @@ class Command(BaseCommand):
             except:
                 import ipdb;
                 ipdb.set_trace()
+
+        management.call_command("save_the_orphan_ratings")

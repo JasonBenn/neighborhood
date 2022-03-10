@@ -255,7 +255,8 @@ from (
          group by rating.zillow_snapshot_id
          having count(*) = 1
      ) as single_rated
-join houses_rating rating on rating.zillow_snapshot_id = single_rated.zillow_snapshot_id and rating.created = single_rated.first_created
+         join houses_rating rating on rating.zillow_snapshot_id = single_rated.zillow_snapshot_id and
+                                      rating.created = single_rated.first_created
 where rating.value > 5;
 
 -- num double-rated that need a 3rd rating
@@ -266,7 +267,8 @@ from (
          group by rating.zillow_snapshot_id
          having count(*) = 1
      ) as single_rated
-join houses_rating rating on rating.zillow_snapshot_id = single_rated.zillow_snapshot_id and rating.created = single_rated.first_created
+         join houses_rating rating on rating.zillow_snapshot_id = single_rated.zillow_snapshot_id and
+                                      rating.created = single_rated.first_created
 where rating.value > 5;
 
 -- double rated, need a 3rd
@@ -275,9 +277,39 @@ from houses_rating r
 group by r.zillow_snapshot_id
 having (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2);
 
--- Create assessor_use_codes mapping
-CREATE MATERIALIZED VIEW assessor_use_codes as
-(
-select distinct use_code, use_definition
-from houses_assessorclasscodes
-    );
+-- non-compound addrs stats
+select houses.apn,
+       scraped_address,
+       bedrooms,
+       sqft,
+       jsonb_array_length(price_history) / 4,
+       jsonb_array_length(filenames)
+from houses_neighborhoodbuildings houses
+         left join houses_zillowsnapshot zil on houses.apn = zil.apn
+left join (
+    select scraped_address, count(ratings.id)
+    from houses_rating ratings
+    join houses_zillowsnapshot hz on ratings.zillow_snapshot_id = hz.id
+    group by scraped_address
+    ) as rating_counts on zil.scraped_address = ratings_counts.scraped_address
+where scraped_address not like '%-%'
+order by houses.apn, zil.address;
+
+-- compound addrs vs not by housing type
+select use_code, scraped_address like '%-%' as compound_addr, count(houses.apn) count
+from houses_neighborhoodbuildings houses
+         left join houses_zillowsnapshot zil on houses.apn = zil.apn
+         left join houses_taxassessordata ht on zil.apn = ht.apn
+group by use_code, compound_addr
+order by count desc;
+
+
+select rating.* from houses_rating rating;
+
+-- validating that Zillow scraped_addresses are actually getting the newest snapshot...
+select time_scraped, scraped_address from zillow_addresses
+where scraped_address = '712-714 Masonic Ave, San Francisco, CA 94117';
+select scraped_address, count(scraped_address) as times_scraped, min(time_scraped), max(time_scraped)
+from houses_zillowsnapshot
+group by scraped_address
+having count(scraped_address) > 1;
