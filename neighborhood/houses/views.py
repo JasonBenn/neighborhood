@@ -4,10 +4,7 @@ from uuid import UUID
 from django.http import HttpResponse
 from django.shortcuts import render
 
-import utils
 from houses.models import Rater, Rating, ZillowSnapshot
-from django.db import connection
-
 from houses.queries import LEADERBOARD, NEXT_LISTINGS, NUM_HOUSES_BY_TYPE
 from utils import fetchall
 
@@ -28,7 +25,6 @@ def index(request):
 
 def analytics(request):
     houses_by_type = fetchall(NUM_HOUSES_BY_TYPE)
-    print(houses_by_type)
     houses_by_type.append({"use_definition": "Total", "count": sum([x["count"] for x in houses_by_type])})
     return render(request, "analytics.html", {
         "houses_by_type": houses_by_type

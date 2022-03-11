@@ -32,3 +32,15 @@ def fetchall(sql):
     raw_results = cursor.fetchall()
     colnames = [desc[0] for desc in cursor.description]
     return [dict(zip(colnames, x)) for x in raw_results]
+
+
+def chunks(lst, n):
+    return [lst[i:i + n] for i in range(0, len(lst), n)]
+
+
+def sliding_window(lst, n=2):
+    return [lst[i:i + n] for i in range(0, len(lst) - 1)]
+
+
+def flatten(t):
+    return [item for sublist in t for item in sublist]

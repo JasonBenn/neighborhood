@@ -9,3 +9,7 @@ tqdm
 django-storages
 python-dotenv
 boto3
+jupyter
+django-extensions
+torch
+matplotlib

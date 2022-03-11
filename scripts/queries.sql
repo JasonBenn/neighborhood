@@ -315,15 +315,17 @@ group by scraped_address
 having count(scraped_address) > 1;
 
 
+-- Original, mysteriously working query
 select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, count(r.id) as num_ratings, min(r.value) as min_rating, z.zillow_url, z.filenames
-from zillow_addresses z
+from houses_zillowsnapshot z
 left join houses_rating r on z.id = r.zillow_snapshot_id
 where jsonb_array_length(z.filenames) > 3
-and (count(r.id) = 0) or (count(r.id) = 1 and min(r.value) > 5) or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
+group by z.id
+having (count(r.id) = 0) or (count(r.id) = 1 and min(r.value) > 5) or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
 order by random()
 limit 5;
 
-
+-- revised to work with zillow_addresses
 select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, r.num_ratings, r.min_rating, z.zillow_url, z.filenames
 from zillow_addresses z
 left join (
@@ -333,3 +335,8 @@ left join (
     group by zil.id
     ) as r on r.id = z.id
 ;
+
+-- Pricing histories
+select *, jsonb_array_length(price_history) / 4 len_history
+from zillow_addresses
+where jsonb_array_length(price_history) / 4 > 1;

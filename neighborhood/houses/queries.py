@@ -35,5 +35,5 @@ left join (
 where jsonb_array_length(z.filenames) > 3
 and (r.num_ratings = 0) or (r.num_ratings = 1 and r.min_rating > 5) or (r.num_ratings = 2 and (r.max_rating - r.min_rating) >= 2)
 order by random()
-limit 5;
+limit 1;
 """
