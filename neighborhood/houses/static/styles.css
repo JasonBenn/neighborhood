@@ -65,3 +65,13 @@ a {
 .hidden {
     display: none;
 }
+
+#houses_by_type {
+    float: left;
+}
+
+#map {
+    float: left;
+    height: 850px;
+    width: 1200px;
+}

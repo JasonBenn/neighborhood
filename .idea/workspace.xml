@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b2cb046-4797-47ef-94ed-10ed6ceb4eb0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/notebooks/.ipynb_checkpoints/learn distribution-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/notebooks/learn distribution.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/houses/notebooks/learn housing distribution.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/notebooks/learn housing distribution.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/houses/static/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neighborhood/houses/templates/analytics.html" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/templates/analytics.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/queries.sql" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/queries.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +98,7 @@
       <option name="presentableId" value="Default" />
       <updated>1646608922325</updated>
       <workItem from="1646608928737" duration="37447000" />
-      <workItem from="1646812384151" duration="24142000" />
+      <workItem from="1646812384151" duration="29671000" />
     </task>
     <servers />
   </component>

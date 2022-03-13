@@ -340,3 +340,16 @@ left join (
 select *, jsonb_array_length(price_history) / 4 len_history
 from zillow_addresses
 where jsonb_array_length(price_history) / 4 > 1;
+
+-- Price histories, NOO
+select *, jsonb_array_length(price_history) / 4 len_history
+from zillow_addresses
+left join houses_owners ho on zillow_addresses.apn = ho.apn
+where mailing_address != site_address
+and jsonb_array_length(price_history) / 4 > 1;
+
+-- Price histories, OO
+select zil.apn, scraped_address, zestimate,  price_history, bool(mailing_address = site_address) owner_occupied, bedrooms, sqft, sqft / bedrooms sqft_per_br
+from zillow_addresses zil
+left join houses_owners ho on zil.apn = ho.apn
+and jsonb_array_length(price_history) / 4 > 1;
