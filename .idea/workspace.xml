@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8b2cb046-4797-47ef-94ed-10ed6ceb4eb0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/neighborhood/houses/templates/thanks.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/queries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/static/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/static/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/templates/ratings.html" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/templates/ratings.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/houses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/houses/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighborhood/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/neighborhood/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/queries.sql" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/queries.sql" afterDir="false" />
-    </list>
+    <list default="true" id="8b2cb046-4797-47ef-94ed-10ed6ceb4eb0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,7 +92,7 @@
       <option name="presentableId" value="Default" />
       <updated>1646608922325</updated>
       <workItem from="1646608928737" duration="37447000" />
-      <workItem from="1646812384151" duration="39765000" />
+      <workItem from="1646812384151" duration="40064000" />
     </task>
     <servers />
   </component>
