@@ -1,6 +1,8 @@
 from django.db import connection, models
 from django.db.models import BooleanField
 
+from utils import execute_sql
+
 
 class BaseModel(models.Model):
     class Meta:
@@ -165,6 +167,18 @@ class ZillowAddresses(ZillowSnapshot):
     class Meta:
         managed = False
         db_table = 'zillow_addresses'
+
+    @classmethod
+    def drop(cls):
+        execute_sql("DROP MATERIALIZED VIEW zillow_addresses;")
+
+    @classmethod
+    def create(cls):
+        execute_sql("""CREATE MATERIALIZED VIEW zillow_addresses as (
+                select distinct on (scraped_address) *
+                from houses_zillowsnapshot
+                order by scraped_address, time_scraped desc);
+                """)
 
 
 class Addresses(BaseModel):

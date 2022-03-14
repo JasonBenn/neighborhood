@@ -353,3 +353,45 @@ select zil.apn, scraped_address, zestimate,  price_history, bool(mailing_address
 from zillow_addresses zil
 left join houses_owners ho on zil.apn = ho.apn
 and jsonb_array_length(price_history) / 4 > 1;
+
+-- Delete
+delete from houses_zillowsnapshot;
+
+
+-- zillow_snapshot_id     uuid
+--     constraint houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi
+--         references houses_zillowsnapshot
+--         deferrable initially deferred,
+
+-- Alter a foreign key constraint to ON DELETE SET NULL
+ALTER TABLE houses_rating
+DROP CONSTRAINT houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi;
+
+ALTER TABLE houses_rating
+ADD CONSTRAINT houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi
+FOREIGN KEY (zillow_snapshot_id) REFERENCES houses_zillowsnapshot
+ON DELETE SET NULL;
+
+-- DDL:
+--     zillow_snapshot_id     uuid
+--         constraint houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi
+--             references houses_zillowsnapshot
+--             deferrable initially deferred,
+
+--     zillow_snapshot_id     uuid
+--         constraint houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi
+--             references houses_zillowsnapshot
+--             on delete set null,
+
+select count(*) from houses_zillowsnapshot;
+select count(*) from zillow_addresses;
+
+update houses_rating rating
+set zillow_snapshot_id = (
+    select id from zillow_addresses add
+    where rating.zillow_scraped_address = add.scraped_address
+    );
+
+-- UPDATE accounts SET (contact_last_name, contact_first_name) =
+--     (SELECT last_name, first_name FROM salesmen
+--      WHERE salesmen.id = accounts.sales_id);

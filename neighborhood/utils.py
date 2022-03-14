@@ -34,6 +34,11 @@ def fetchall(sql):
     return [dict(zip(colnames, x)) for x in raw_results]
 
 
+def execute_sql(sql):
+    cursor = connection.cursor()
+    return cursor.execute(sql)
+
+
 def chunks(lst, n):
     return [lst[i:i + n] for i in range(0, len(lst), n)]
 
