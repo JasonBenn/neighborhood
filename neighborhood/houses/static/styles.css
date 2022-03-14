@@ -1,0 +1,115 @@
+html, body, ul {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    overscroll-behavior-y: none;
+    text-align: center;
+    font-family: -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue;
+    background: #333;
+    color: white;
+    padding-bottom: 40px;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+ul {
+    columns: 4;
+    column-gap: 3px;
+}
+
+img {
+    width: 100%;
+}
+
+.title {
+    /*font: 800 3.1875rem/4.4375rem Spartan;*/
+    /*background: linear-gradient(90deg, #694ED6, #C137A2);*/
+    /*-webkit-background-clip: text;*/
+    /*-webkit-text-fill-color: transparent;*/
+}
+
+.info, .prev-ratings {
+    text-align: right;
+    position: fixed;
+    right: 1em;
+    padding: 1em 0.5em;
+}
+
+.info {
+    top: 1em;
+}
+
+.prev-ratings {
+    bottom: 42px;
+}
+
+a {
+    color: white;
+}
+
+.shadow {
+    background: black;
+    opacity: .5;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    border-radius: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+#houses_by_type {
+    float: left;
+}
+
+#map {
+    float: left;
+    height: 850px;
+    width: 1200px;
+}
+
+.meter {
+    box-sizing: content-box;
+    height: 10px;
+    width: calc(100vw - 40px);
+    position: fixed;
+    bottom: 3px;
+    background: #555;
+    border-radius: 13px;
+    padding: 10px;
+    margin: 3px 10px;
+    box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.meter > span {
+  display: block;
+  height: 100%;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: rgb(43, 194, 83);
+  /*background-image: linear-gradient(center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);*/
+  box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3), inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.meter > .progress {
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    z-index: 1;
+    background: rgba(0, 0, 0, 30%);
+    padding: 0px 8px;
+    border-radius: 12px;
+}

@@ -1,0 +1,16 @@
+geopandas
+pandas
+matplotlib
+numpy
+django==3.2
+psycopg2
+ipdb
+tqdm
+django-storages
+python-dotenv
+boto3
+jupyter
+django-extensions
+matplotlib
+gunicorn
+django-heroku
