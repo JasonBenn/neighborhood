@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8b2cb046-4797-47ef-94ed-10ed6ceb4eb0" name="Changes" comment="" />
+    <list default="true" id="8b2cb046-4797-47ef-94ed-10ed6ceb4eb0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/scripts/backup.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/one-liners.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/one-liners.sh" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,7 +95,7 @@
       <option name="presentableId" value="Default" />
       <updated>1646608922325</updated>
       <workItem from="1646608928737" duration="37447000" />
-      <workItem from="1646812384151" duration="40064000" />
+      <workItem from="1646812384151" duration="40244000" />
     </task>
     <servers />
   </component>
