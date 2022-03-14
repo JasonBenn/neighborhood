@@ -37,3 +37,39 @@ and (r.num_ratings = 0) or (r.num_ratings = 1 and r.min_rating > 5) or (r.num_ra
 order by random()
 limit 1;
 """
+
+NEEDS_FIRST_RATING_COUNT = """
+select count(*)
+from (
+         select count(rating) listing_ratings
+         from zillow_addresses z
+                  left join houses_rating rating on z.id = rating.zillow_snapshot_id
+         where jsonb_array_length(z.filenames) > 3
+         group by z.id
+         having count(rating) = 0
+     ) zero_rated;"""
+
+NEEDS_SECOND_RATING_COUNT = """
+select count(*) count_single_rated
+from (
+         select rating.zillow_snapshot_id, min(rating.created) first_created
+         from houses_rating as rating
+         group by rating.zillow_snapshot_id
+         having count(*) = 1
+     ) as single_rated
+         join houses_rating rating on rating.zillow_snapshot_id = single_rated.zillow_snapshot_id and
+                                      rating.created = single_rated.first_created
+where rating.value > 5;"""
+
+NEEDS_THIRD_RATING_COUNT = """
+select count(*)
+from (
+         select r.zillow_snapshot_id, count(r.id), max(r.value), min(r.value)
+         from houses_rating r
+         group by r.zillow_snapshot_id
+         having (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
+     ) double_rated;"""
+
+COUNT_RATINGS = """
+select count(*)
+from houses_rating;"""

@@ -36,7 +36,8 @@ def fetchall(sql):
 
 def execute_sql(sql):
     cursor = connection.cursor()
-    return cursor.execute(sql)
+    cursor.execute(sql)
+    return cursor.fetchone()[0]
 
 
 def chunks(lst, n):

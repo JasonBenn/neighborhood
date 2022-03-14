@@ -53,6 +53,12 @@
   {% endfor %}
   <div class="shadow"></div>
 </div>
+
+<div class="meter">
+  <div class="progress">{{ progress_numerator|maybe_intcomma }} / {{ progress_denominator|maybe_intcomma }}</div>
+	<span style="width: {{ progress }}%"></span>
+</div>
+
 <script>
   let isLeaderboardHidden = document.querySelector('#leaderboard').className === "hidden"
   document.addEventListener("DOMContentLoaded", function (event) {

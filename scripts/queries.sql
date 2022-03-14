@@ -229,6 +229,7 @@ order by count(all_ratings) desc;
 --   need 3: 2 records, diff gt 2, 3 ratings
 
 -- start with number of listings that have > 3 images
+EXPLAIN ANALYZE
 select rating_counts.listing_ratings as num_ratings, rating_counts.count
 from (
          select count(rating) listing_ratings
@@ -247,20 +248,20 @@ select min(rating.created)
 from houses_rating as rating
 group by rating.zillow_snapshot_id;
 
--- num single-rated that need another rating
+-- zero-counted ratings
 select count(*)
 from (
-         select rating.zillow_snapshot_id, min(rating.created) first_created
-         from houses_rating as rating
-         group by rating.zillow_snapshot_id
-         having count(*) = 1
-     ) as single_rated
-         join houses_rating rating on rating.zillow_snapshot_id = single_rated.zillow_snapshot_id and
-                                      rating.created = single_rated.first_created
-where rating.value > 5;
+         select count(rating) listing_ratings
+         from zillow_addresses z
+                  left join houses_rating rating on z.id = rating.zillow_snapshot_id
+         where jsonb_array_length(z.filenames) > 3
+         group by z.id
+         having count(rating) = 0
+     ) zero_rated;
 
--- num double-rated that need a 3rd rating
-select count(*)
+-- num single-rated that need another rating
+EXPLAIN ANALYZE
+select count(*) count_single_rated
 from (
          select rating.zillow_snapshot_id, min(rating.created) first_created
          from houses_rating as rating
@@ -272,10 +273,14 @@ from (
 where rating.value > 5;
 
 -- double rated, need a 3rd
-select r.zillow_snapshot_id, count(r.id), max(r.value), min(r.value)
-from houses_rating r
-group by r.zillow_snapshot_id
-having (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2);
+EXPLAIN ANALYZE
+select count(*)
+from (
+         select r.zillow_snapshot_id, count(r.id), max(r.value), min(r.value)
+         from houses_rating r
+         group by r.zillow_snapshot_id
+         having (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
+     ) double_rated;
 
 -- non-compound addrs stats
 select houses.apn,
@@ -286,12 +291,12 @@ select houses.apn,
        jsonb_array_length(filenames)
 from houses_neighborhoodbuildings houses
          left join zillow_addresses zil on houses.apn = zil.apn
-left join (
+         left join (
     select scraped_address, count(ratings.id)
     from houses_rating ratings
-    join zillow_addresses hz on ratings.zillow_snapshot_id = hz.id
+             join zillow_addresses hz on ratings.zillow_snapshot_id = hz.id
     group by scraped_address
-    ) as rating_counts on zil.scraped_address = ratings_counts.scraped_address
+) as rating_counts on zil.scraped_address = ratings_counts.scraped_address
 where scraped_address not like '%-%'
 order by houses.apn, zil.address;
 
@@ -304,10 +309,12 @@ group by use_code, compound_addr
 order by count desc;
 
 
-select rating.* from houses_rating rating;
+select rating.*
+from houses_rating rating;
 
 -- validating that Zillow scraped_addresses are actually getting the newest snapshot...
-select time_scraped, scraped_address from zillow_addresses
+select time_scraped, scraped_address
+from zillow_addresses
 where scraped_address = '712-714 Masonic Ave, San Francisco, CA 94117';
 select scraped_address, count(scraped_address) as times_scraped, min(time_scraped), max(time_scraped)
 from houses_zillowsnapshot
@@ -316,24 +323,42 @@ having count(scraped_address) > 1;
 
 
 -- Original, mysteriously working query
-select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, count(r.id) as num_ratings, min(r.value) as min_rating, z.zillow_url, z.filenames
+select z.id,
+       substring(z.address from '^(.*), San Francisco') as address,
+       z.bedrooms,
+       z.baths,
+       z.sqft,
+       count(r.id)                                      as num_ratings,
+       min(r.value)                                     as min_rating,
+       z.zillow_url,
+       z.filenames
 from houses_zillowsnapshot z
-left join houses_rating r on z.id = r.zillow_snapshot_id
+         left join houses_rating r on z.id = r.zillow_snapshot_id
 where jsonb_array_length(z.filenames) > 3
 group by z.id
-having (count(r.id) = 0) or (count(r.id) = 1 and min(r.value) > 5) or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
+having (count(r.id) = 0)
+    or (count(r.id) = 1 and min(r.value) > 5)
+    or (count(r.id) = 2 and (max(r.value) - min(r.value)) >= 2)
 order by random()
 limit 5;
 
 -- revised to work with zillow_addresses
-select z.id, substring(z.address from '^(.*), San Francisco') as address, z.bedrooms, z.baths, z.sqft, r.num_ratings, r.min_rating, z.zillow_url, z.filenames
+select z.id,
+       substring(z.address from '^(.*), San Francisco') as address,
+       z.bedrooms,
+       z.baths,
+       z.sqft,
+       r.num_ratings,
+       r.min_rating,
+       z.zillow_url,
+       z.filenames
 from zillow_addresses z
-left join (
+         left join (
     select zil.id, count(rs.id) as num_ratings, min(rs.value) as min_rating
     from zillow_addresses zil
-        join houses_rating rs on zil.id = rs.zillow_snapshot_id
+             join houses_rating rs on zil.id = rs.zillow_snapshot_id
     group by zil.id
-    ) as r on r.id = z.id
+) as r on r.id = z.id
 ;
 
 -- Pricing histories
@@ -344,18 +369,26 @@ where jsonb_array_length(price_history) / 4 > 1;
 -- Price histories, NOO
 select *, jsonb_array_length(price_history) / 4 len_history
 from zillow_addresses
-left join houses_owners ho on zillow_addresses.apn = ho.apn
+         left join houses_owners ho on zillow_addresses.apn = ho.apn
 where mailing_address != site_address
-and jsonb_array_length(price_history) / 4 > 1;
+  and jsonb_array_length(price_history) / 4 > 1;
 
 -- Price histories, OO
-select zil.apn, scraped_address, zestimate,  price_history, bool(mailing_address = site_address) owner_occupied, bedrooms, sqft, sqft / bedrooms sqft_per_br
+select zil.apn,
+       scraped_address,
+       zestimate,
+       price_history,
+       bool(mailing_address = site_address) owner_occupied,
+       bedrooms,
+       sqft,
+       sqft / bedrooms                      sqft_per_br
 from zillow_addresses zil
-left join houses_owners ho on zil.apn = ho.apn
-and jsonb_array_length(price_history) / 4 > 1;
+         left join houses_owners ho on zil.apn = ho.apn
+    and jsonb_array_length(price_history) / 4 > 1;
 
 -- Delete
-delete from houses_zillowsnapshot;
+delete
+from houses_zillowsnapshot;
 
 
 -- zillow_snapshot_id     uuid
@@ -365,12 +398,12 @@ delete from houses_zillowsnapshot;
 
 -- Alter a foreign key constraint to ON DELETE SET NULL
 ALTER TABLE houses_rating
-DROP CONSTRAINT houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi;
+    DROP CONSTRAINT houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi;
 
 ALTER TABLE houses_rating
-ADD CONSTRAINT houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi
-FOREIGN KEY (zillow_snapshot_id) REFERENCES houses_zillowsnapshot
-ON DELETE SET NULL;
+    ADD CONSTRAINT houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi
+        FOREIGN KEY (zillow_snapshot_id) REFERENCES houses_zillowsnapshot
+            ON DELETE SET NULL;
 
 -- DDL:
 --     zillow_snapshot_id     uuid
@@ -383,15 +416,23 @@ ON DELETE SET NULL;
 --             references houses_zillowsnapshot
 --             on delete set null,
 
-select count(*) from houses_zillowsnapshot;
-select count(*) from zillow_addresses;
+select count(*)
+from houses_zillowsnapshot;
+select count(*)
+from zillow_addresses;
 
 update houses_rating rating
 set zillow_snapshot_id = (
-    select id from zillow_addresses add
+    select id
+    from zillow_addresses add
     where rating.zillow_scraped_address = add.scraped_address
-    );
+);
 
 -- UPDATE accounts SET (contact_last_name, contact_first_name) =
 --     (SELECT last_name, first_name FROM salesmen
 --      WHERE salesmen.id = accounts.sales_id);
+
+-- Number of houses to rate
+select count(*)
+from zillow_addresses z
+where jsonb_array_length(z.filenames) > 3;
