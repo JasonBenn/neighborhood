@@ -1,1 +1,1 @@
-web: gunicorn myproject.wsgi
+web: gunicorn --chdir neighborhood neighborhood.wsgi
