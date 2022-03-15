@@ -30,7 +30,8 @@ SECRET_KEY = 'django-insecure-c(^ibws76(wn$!jdopm=e7v-abv06p#=v5eikc)n2+_=-a1bb5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
 
 # Application definition
 
@@ -143,4 +144,4 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'houses/static')]
 STATIC_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
