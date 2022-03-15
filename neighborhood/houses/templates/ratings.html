@@ -47,7 +47,7 @@
   </div>
   {% for rater in raters %}
     {% if rater.id == active_rater_id %}
-      <div><a href="http://localhost:8000/admin/houses/rating/?rater__name={{ rater.name }}" target="_blank">View recent
+      <div><a href="/admin/houses/rating/?rater__name={{ rater.name }}" target="_blank">View recent
         ratings</a></div>
     {% endif %}
   {% endfor %}
