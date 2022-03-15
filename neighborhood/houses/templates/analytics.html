@@ -61,16 +61,32 @@
       accessToken: 'pk.eyJ1IjoiamFzb25jYmVubiIsImEiOiJjbDBvd2UzeDYxdWlhM2lzNXg3cmZ0dm8xIn0.oPAb08Z-DAOcSj8wSe8y9Q'
     }).addTo(map);
 
-    fetch("{% static 'building_footprints.geojson' %}")
+    function ratingToColor(rating) {
+      if (!rating) return "#bababa"
+      const colors = ["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"]
+      return colors[Math.round(rating - 1)]
+    }
+
+    fetch("{% static 'buildings.geojson' %}")
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         L.geoJSON(data, {
           style: function (feature) {
-            return {color: feature.properties.color};
+            let color = ratingToColor(feature.properties.avg_rating);
+            return {
+              fillColor: color,
+              weight: 1,
+              opacity: 1,
+              color: color,
+              fillOpacity: 0.7
+            };
           }
         }).bindPopup(function (layer) {
-          return layer.feature.geometry.coordinates[0][0][0].toString();
+          let rating = layer.feature.properties.avg_rating;
+          let ratingStr = rating ? rating.toFixed(1) : "N/A"
+          let scrapedAddress = layer.feature.properties.scraped_address;
+          let scrapedAddressStr = scrapedAddress ? scrapedAddress : "N/A";
+          return `(${ratingStr}) ${scrapedAddressStr}`;
         }).addTo(map);
 
       })

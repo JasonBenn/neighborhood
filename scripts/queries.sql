@@ -214,6 +214,25 @@ from houses_rater rater
 group by rater.id
 order by count(all_ratings) desc;
 
+-- One rater's ratings vs ground truths
+select round(avg(all_ratings.value - ground_truth), 1)
+from houses_rater rater
+         join houses_rating all_ratings on all_ratings.rater_id = rater.id
+         join zillow_addresses z on all_ratings.zillow_snapshot_id = z.id
+         left join (select z.id, avg(rating.value) as ground_truth
+                    from houses_rating rating
+                             join houses_rater rater on rating.rater_id = rater.id
+                             join zillow_addresses z on rating.zillow_snapshot_id = z.id
+                    group by z.id
+                    having count(rating.value) > 1
+) as ground_truths on ground_truths.id = z.id
+where rater.name = 'Loewen'
+group by all_ratings.zillow_snapshot_id
+order by count(all_ratings) desc;
+
+select min(created), max(created)
+from houses_rating;
+
 
 -- progress query
 -- number of ratings w:
@@ -240,6 +259,11 @@ from (
      ) as rating_counts
 group by rating_counts.listing_ratings
 order by num_ratings;
+
+select value rating_value, count(*) num_ratings
+from houses_rating
+group by value
+order by rating_value;
 
 select count(*)
 from houses_rating;
@@ -284,7 +308,7 @@ from (
 
 -- non-compound addrs stats
 select houses.apn,
-       scraped_address,
+       rating_counts.scraped_address,
        bedrooms,
        sqft,
        jsonb_array_length(price_history) / 4,
@@ -296,8 +320,8 @@ from houses_neighborhoodbuildings houses
     from houses_rating ratings
              join zillow_addresses hz on ratings.zillow_snapshot_id = hz.id
     group by scraped_address
-) as rating_counts on zil.scraped_address = ratings_counts.scraped_address
-where scraped_address not like '%-%'
+) as rating_counts on zil.scraped_address = rating_counts.scraped_address
+where rating_counts.scraped_address not like '%-%'
 order by houses.apn, zil.address;
 
 -- compound addrs vs not by housing type
@@ -390,12 +414,6 @@ from zillow_addresses zil
 delete
 from houses_zillowsnapshot;
 
-
--- zillow_snapshot_id     uuid
---     constraint houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi
---         references houses_zillowsnapshot
---         deferrable initially deferred,
-
 -- Alter a foreign key constraint to ON DELETE SET NULL
 ALTER TABLE houses_rating
     DROP CONSTRAINT houses_rating_zillow_snapshot_id_9400d6d5_fk_houses_zi;
@@ -418,6 +436,7 @@ ALTER TABLE houses_rating
 
 select count(*)
 from houses_zillowsnapshot;
+
 select count(*)
 from zillow_addresses;
 
@@ -428,11 +447,43 @@ set zillow_snapshot_id = (
     where rating.zillow_scraped_address = add.scraped_address
 );
 
--- UPDATE accounts SET (contact_last_name, contact_first_name) =
---     (SELECT last_name, first_name FROM salesmen
---      WHERE salesmen.id = accounts.sales_id);
-
 -- Number of houses to rate
 select count(*)
 from zillow_addresses z
 where jsonb_array_length(z.filenames) > 3;
+
+-- select count(*) 3,667 - is that how many we made? Yes.
+
+select hz.apn,
+       avg(rat.value)                 avg_rating,
+       geometry,
+       scraped_address,
+       scraped_address is not null as found_on_zillow
+from houses_rating rat
+         join houses_zillowsnapshot hz on rat.zillow_snapshot_id = hz.id
+         full join houses_neighborhoodbuildings hn on hz.apn = hn.apn
+group by hz.apn, geometry, scraped_address;
+
+-- where rat.value = 10;
+
+COPY (
+         SELECT row_to_json(fc)
+FROM (SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features
+      FROM (SELECT 'Feature'                       As type
+                 , ST_AsGeoJSON(lg.geometry)::json As geometry
+                 , row_to_json(lp)                 As properties
+            FROM houses_neighborhoodbuildings As lg
+                     INNER JOIN (
+                select hn.id,
+                       hz.apn,
+                       avg(rat.value)                 avg_rating,
+                       geometry,
+                       scraped_address,
+                       scraped_address is not null as found_on_zillow
+                from houses_rating rat
+                         join houses_zillowsnapshot hz on rat.zillow_snapshot_id = hz.id
+                         full join houses_neighborhoodbuildings hn on hz.apn = hn.apn
+                group by hn.id, hz.apn, geometry, scraped_address
+            ) As lp
+                                ON lg.id = lp.id) As f) As fc
+    ) TO '/Users/jasonbenn/Desktop/data/buildings.geojson';
