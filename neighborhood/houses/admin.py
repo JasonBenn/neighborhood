@@ -1,7 +1,7 @@
 from django.contrib.gis import admin
 from django.contrib.gis.geos import Point
 
-from houses.models import Person, Rater, Rating
+from houses.models import Building, Person, Rater, Rating
 
 
 class RaterAdmin(admin.ModelAdmin):
@@ -16,16 +16,22 @@ class RatingAdmin(admin.ModelAdmin):
     def get_list_filter(self, request):
         return super().get_list_filter(request)
 
+gis_kwargs = {
+    "default_lon": -122.435451,
+    "default_lat": 37.767,
+    "default_zoom": 15,
+    "map_width": 900,
+    "map_height": 750,
+}
 
 class PersonAdmin(admin.GISModelAdmin):
-    gis_widget_kwargs = {'attrs': {
-        "default_lon": -122.435451,
-        "default_lat": 37.767,
-        "default_zoom": 15,
-        "map_width": 900,
-        "map_height": 750,
-    }}
+    gis_widget_kwargs = {'attrs': gis_kwargs}
+
+
+class BuildingAdmin(admin.GISModelAdmin):
+    gis_widget_kwargs = {'attrs': gis_kwargs}
 
 admin.site.register(Rating, RatingAdmin)
 admin.site.register(Rater, RaterAdmin)
 admin.site.register(Person, PersonAdmin)
+admin.site.register(Building, BuildingAdmin)

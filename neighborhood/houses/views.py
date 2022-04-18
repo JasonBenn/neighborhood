@@ -1,10 +1,11 @@
 import json
 from uuid import UUID
 
+from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from houses.models import Rater, Rating, ZillowSnapshot
+from houses.models import Building, Person, Rater, Rating, ZillowSnapshot
 from houses.queries import COUNT_RATINGS, LEADERBOARD, NEEDS_FIRST_RATING_COUNT, NEEDS_SECOND_RATING_COUNT, \
     NEEDS_THIRD_RATING_COUNT, \
     NEXT_LISTINGS, \
@@ -51,7 +52,9 @@ def analytics(request):
 
 
 def hoodmap(request):
-    return render(request, "hoodmap.html", {})
+    people = serialize('geojson', Person.objects.all(), geometry_field='location', fields=('first_name', 'last_name'))
+    buildings = serialize('geojson', Building.objects.all(), geometry_field='location', fields=('name',))
+    return render(request, "hoodmap.html", {"people": people, "buildings": buildings})
 
 
 def create_rating(request):
