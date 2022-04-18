@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c(^ibws76(wn$!jdopm=e7v-abv06p#=v5eikc)n2+_=-a1bb5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.gis',
     'storages',
     'django_extensions'
 ]
@@ -83,7 +84,7 @@ WSGI_APPLICATION = 'neighborhood.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'neighborhood',
         'USER': 'jasonbenn',
         'PASSWORD': '',

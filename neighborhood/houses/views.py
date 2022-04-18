@@ -50,6 +50,10 @@ def analytics(request):
     })
 
 
+def hoodmap(request):
+    return render(request, "hoodmap.html", {})
+
+
 def create_rating(request):
     data = json.loads(request.body)
     rater_id = int(data['raterId'])

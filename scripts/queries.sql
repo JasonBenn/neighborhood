@@ -487,3 +487,54 @@ FROM (SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As feature
             ) As lp
                                 ON lg.id = lp.id) As f) As fc
     ) TO '/Users/jasonbenn/Desktop/data/buildings.geojson';
+
+
+select bedrooms, count(*) from zillow_addresses
+group by bedrooms
+order by bedrooms;
+
+select distinct count(apn) from houses_neighborhoodbuildings;
+
+-- MRES >= 4BR: 1026 / (1250 + 1026) * (1250 + 1026 + 4070) = 2861
+-- SRES >= 4BR: 392 / (392 + 1244) * (1244 + 393 + 606) = 537
+
+-- MRES >= 6BR: 396 / (1880 + 396) * (1880 + 396 + 4070) = 1104
+-- SRES >= 6BR: 65 / (65 + 1571) * (1571 + 393 + 606) = 102
+select use_code, bedrooms >= 6 as ">= 6BR", count(*) from houses_neighborhoodbuildings
+join houses_addresses ha on houses_neighborhoodbuildings.apn = ha.apn
+join houses_taxassessordata ht on houses_neighborhoodbuildings.apn = ht.apn
+join zillow_addresses za on ha.apn = za.apn
+where use_code in ('SRES', 'MRES')
+group by use_code, bedrooms >= 6
+order by use_code, bedrooms >= 6;
+
+select use_code, count(*) from houses_neighborhoodbuildings
+join houses_addresses ha on houses_neighborhoodbuildings.apn = ha.apn
+join houses_taxassessordata ht on houses_neighborhoodbuildings.apn = ht.apn
+join zillow_addresses za on ha.apn = za.apn
+where use_code in ('SRES', 'MRES')
+group by use_code
+order by use_code;
+
+-- MRES NOO: 5585 / (727 + 5585) * (5585 + 727 + 1877) = 7246
+-- SRES NOO: 128 / (128 + 282) * (128 + 282 + 1905) = 723
+-- NOO: 5441 + 697 = 6138
+-- Total residential units: 5585 + 727 + 1877 + 128 + 282 + 1905 = 10504
+-- Total buildings: 5340
+-- (Might be double-counting buildings bc Neighbohood buildings divides them by area)
+select use_code, mailing_address = site_address, bedrooms, count(*) from houses_neighborhoodbuildings
+left join houses_addresses ha on houses_neighborhoodbuildings.apn = ha.apn
+join houses_taxassessordata ht on houses_neighborhoodbuildings.apn = ht.apn
+left join zillow_addresses za on ha.apn = za.apn
+left join houses_owners ho on ha.apn = ho.apn
+where use_code in ('SRES', 'MRES')
+group by use_code, mailing_address = site_address, bedrooms
+order by use_code, mailing_address = site_address;
+
+
+-- 1: 243
+-- 2: 631
+-- 3: 619
+-- 4: 368
+-- 5: 174
+-- 6: 103

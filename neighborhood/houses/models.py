@@ -1,4 +1,4 @@
-from django.db import connection, models
+from django.contrib.gis.db import models
 from django.db.models import BooleanField
 
 from utils import execute_sql
@@ -212,3 +212,12 @@ class AssessorClassCodes(BaseModel):
     use_definition = models.TextField()
     property_class_code = models.CharField(max_length=4)
     property_class_definition = models.TextField()
+
+
+class Person(BaseModel):
+    first_name = models.CharField(max_length=64)
+    last_name = models.CharField(max_length=64)
+    location = models.PointField()
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
