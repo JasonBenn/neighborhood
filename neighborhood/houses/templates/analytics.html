@@ -25,20 +25,19 @@
 </head>
 <body>
 <h1>top secret intelligence</h1>
-<div id="houses_by_type">
+<div id="buildings">
+  <div>{{ raw_buildings }}</div>
   <h2>houses by type</h2>
   <table>
     <thead>
     <tr>
-      <td>Use definition</td>
-      <td>Count</td>
+      <td>Name</td>
     </tr>
     </thead>
     <tbody>
-    {% for row in houses_by_type %}
+    {% for building in raw_buildings %}
       <tr>
-        <td>{{ row.use_definition }}</td>
-        <td>{{ row.count }}</td>
+        <td>{{ building.name }}</td>
       </tr>
     {% endfor %}
     </tbody>

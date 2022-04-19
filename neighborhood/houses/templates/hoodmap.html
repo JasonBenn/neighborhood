@@ -37,24 +37,31 @@
 <div id="map"></div>
 
 <div id="houses_by_type">
-  <h2>houses by type</h2>
+  <h2>Spaces</h2>
   <table>
     <thead>
     <tr>
-      <td>Use definition</td>
-      <td>Count</td>
+      <td>Name</td>
     </tr>
     </thead>
     <tbody>
-    {% for row in houses_by_type %}
+    {% for building in raw_buildings %}
       <tr>
-        <td>{{ row.use_definition }}</td>
-        <td>{{ row.count }}</td>
+        <td>{{ building.name }}</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
 </div>
+
+<div>
+  {% for person in raw_people %}
+    <div>
+      <div>{{ person.first_name }} {{ person.last_name }}</div>
+    </div>
+  {% endfor %}
+</div>
+
 
 {{ people|json_script:"people-data" }}
 {{ buildings|json_script:"building-data" }}
@@ -84,7 +91,7 @@
         color: color,
         fillOpacity: 0.7
       };
-    };
+    }
 
     L.geoJSON(people, {
       pointToLayer: function (feature, latlng) {
