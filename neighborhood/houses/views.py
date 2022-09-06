@@ -5,8 +5,9 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from houses.models import Building, Person, Rater, Rating, ZillowSnapshot
-from houses.queries import COUNT_RATINGS, LEADERBOARD, NEEDS_FIRST_RATING_COUNT, NEEDS_SECOND_RATING_COUNT, \
+from houses.models import Building, Event, Person, Rater, Rating, ZillowSnapshot
+from houses.queries import COUNT_RATINGS, EVENTS_DATA, EVENTS_GEOJSON, LEADERBOARD, NEEDS_FIRST_RATING_COUNT, \
+    NEEDS_SECOND_RATING_COUNT, \
     NEEDS_THIRD_RATING_COUNT, \
     NEXT_LISTINGS, \
     NUM_HOUSES_BY_TYPE
@@ -51,12 +52,19 @@ def analytics(request):
     })
 
 
-def hoodmap(request):
+def nose(request):
     raw_people = Person.objects.all()
     people = serialize('geojson', raw_people, geometry_field='location', fields=('first_name', 'last_name'))
     raw_buildings = Building.objects.all()
     buildings = serialize('geojson', raw_buildings, geometry_field='location', fields=('name',))
-    return render(request, "hoodmap.html", {"people": people, "buildings": buildings, "raw_buildings": raw_buildings.values(), "raw_people": raw_people.values()})
+    return render(request, "nose.html", {
+        "events_geojson": fetchall(EVENTS_GEOJSON),
+        "events_data": fetchall(EVENTS_DATA),
+        "people": people,
+        "buildings": buildings,
+        "raw_buildings": raw_buildings.values(),
+        "raw_people": raw_people.values()
+    })
 
 
 def create_rating(request):

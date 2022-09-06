@@ -5,24 +5,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HoodMap</title>
+  <title>Neighborhood Dashboard</title>
   <link rel="stylesheet" href="{% static 'styles.css' %}">
   <style>
-      table {
-          text-align: left;
-      }
-
-      #buildings {
-
-      }
-
-      #people {
-
-      }
-
-      #map {
-
-      }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -32,12 +17,10 @@
           crossorigin=""></script>
 </head>
 <body>
-<h1>The Neighborhood</h1>
-
-<div id="map"></div>
-
-<div id="houses_by_type">
-  <h2>Spaces</h2>
+<h1>top secret intelligence</h1>
+<div id="buildings">
+  <div>{{ raw_buildings }}</div>
+  <h2>houses by type</h2>
   <table>
     <thead>
     <tr>
@@ -54,17 +37,7 @@
   </table>
 </div>
 
-<div>
-  {% for person in raw_people %}
-    <div>
-      <div>{{ person.first_name }} {{ person.last_name }}</div>
-    </div>
-  {% endfor %}
-</div>
-
-
-{{ people|json_script:"people-data" }}
-{{ buildings|json_script:"building-data" }}
+<div id="map"></div>
 
 <script>
   async function main() {
@@ -80,35 +53,35 @@
       accessToken: 'pk.eyJ1IjoiamFzb25jYmVubiIsImEiOiJjbDBvd2UzeDYxdWlhM2lzNXg3cmZ0dm8xIn0.oPAb08Z-DAOcSj8wSe8y9Q'
     }).addTo(map);
 
-    const people = JSON.parse(JSON.parse(document.getElementById('people-data').textContent))
-    const buildings = JSON.parse(JSON.parse(document.getElementById('building-data').textContent))
-
-    function getStyle(feature, color) {
-      return {
-        fillColor: color,
-        weight: 1,
-        opacity: 1,
-        color: color,
-        fillOpacity: 0.7
-      };
+    function ratingToColor(rating) {
+      if (!rating) return "#bababa"
+      const colors = ["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"]
+      return colors[Math.round(rating - 1)]
     }
 
-    L.geoJSON(people, {
-      pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, getStyle(feature, '#66bd63'));
-      },
-    }).bindPopup(function (layer) {
-      return layer.feature.properties.first_name + " " + layer.feature.properties.last_name;
-    }).addTo(map);
+    fetch("{% static 'buildings.geojson' %}")
+      .then(response => response.json())
+      .then(data => {
+        L.geoJSON(data, {
+          style: function (feature) {
+            let color = ratingToColor(feature.properties.avg_rating);
+            return {
+              fillColor: color,
+              weight: 1,
+              opacity: 1,
+              color: color,
+              fillOpacity: 0.7
+            };
+          }
+        }).bindPopup(function (layer) {
+          let rating = layer.feature.properties.avg_rating;
+          let ratingStr = rating ? rating.toFixed(1) : "N/A"
+          let scrapedAddress = layer.feature.properties.scraped_address;
+          let scrapedAddressStr = scrapedAddress ? scrapedAddress : "N/A";
+          return `(${ratingStr}) ${scrapedAddressStr}`;
+        }).addTo(map);
 
-    L.geoJSON(buildings, {
-      pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, getStyle(feature, '#a50026'));
-      },
-    }).bindPopup(function (layer) {
-      return layer.feature.properties.name;
-    }).addTo(map);
-
+      })
 
   }
 

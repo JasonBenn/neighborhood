@@ -73,3 +73,19 @@ from (
 COUNT_RATINGS = """
 select count(*)
 from houses_rating;"""
+
+EVENTS_DATA = """
+select ev.id, ev.name, ev.when, hb.name as building_name
+from houses_event ev
+left join houses_building hb on ev.building_id = hb.id;"""
+
+EVENTS_GEOJSON = """
+SELECT json_build_object(
+    'type', 'FeatureCollection',
+    'features', json_agg(ST_AsGeoJSON(t.*)::json)
+    )
+FROM ( select ev.id, ev.name, ev.location::geometry, ev.when, hb.name as building_name
+        from houses_event ev
+        left join houses_building hb on ev.building_id = hb.id
+     ) as t(id, name, location, "when", building_name);
+"""

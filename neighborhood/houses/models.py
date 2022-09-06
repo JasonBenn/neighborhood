@@ -1,5 +1,7 @@
 from django.contrib.gis.db import models
 from django.db.models import BooleanField
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 from utils import execute_sql
 
@@ -214,18 +216,46 @@ class AssessorClassCodes(BaseModel):
     property_class_definition = models.TextField()
 
 
-class Person(BaseModel):
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
-    location = models.PointField()
-
-    def __str__(self):
-        return self.first_name + " " + self.last_name
-
-
 class Building(BaseModel):
     name = models.CharField(max_length=64)
     location = models.PointField()
 
     def __str__(self):
         return self.name
+
+
+class PersonStatus(models.IntegerChoices):
+    NOT_SET = 0
+    SETTLED = 1
+    SEARCHING = 2
+    ASDF = 3
+    EAST_HILL = 4
+
+
+class Person(BaseModel):
+    first_name = models.CharField(max_length=64)
+    last_name = models.CharField(max_length=64)
+    email = models.TextField(null=True, blank=True)
+    building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
+    move_in_date = models.DateTimeField()
+    status = models.IntegerField(choices=PersonStatus.choices, default=PersonStatus.NOT_SET)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
+
+class Event(BaseModel):
+    name = models.CharField(max_length=64)
+    location = models.PointField(blank=True)
+    building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
+    when = models.DateTimeField()
+
+    def __str__(self):
+        return self.name
+
+
+@receiver(pre_save, sender=Event)
+def ensure_location(sender, instance, **kwargs):
+    print(instance)
+    if instance.building and not instance.location:
+        instance.location = instance.building.location

@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.gis',
     'storages',
-    'django_extensions'
+    'django_extensions',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,154 @@
+{% load static %}
+{% load view_functions %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HoodMap</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <style>
+      table {
+          text-align: left;
+      }
+
+      #buildings {
+
+      }
+
+      #people {
+
+      }
+
+      #map {
+
+      }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+          integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+          crossorigin=""></script>
+</head>
+<body>
+<h1>The Neighborhood</h1>
+
+<div id="map"></div>
+
+<div id="houses_by_type">
+  <h2>Spaces</h2>
+  <table>
+    <thead>
+    <tr>
+      <td>Name</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for building in raw_buildings %}
+      <tr>
+        <td>{{ building.name }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div id="events">
+  <h2>Events</h2>
+  <table>
+    <thead>
+    <tr>
+      <td>Name</td>
+      <td>Host</td>
+      <td>When</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for event in events_data %}
+      <tr>
+        <td>{{ event.name }}</td>
+        <td>{{ event.building_name }}</td>
+        <td>{{ event.when }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <h1>people</h1>
+  {% for person in raw_people %}
+    <div>
+      <div>{{ person.first_name }} {{ person.last_name }}</div>
+    </div>
+  {% endfor %}
+</div>
+
+{{ people|json_script:"people-data" }}
+{{ buildings|json_script:"building-data" }}
+{{ events_geojson|json_script:"events-geojson" }}
+
+<script>
+  async function main() {
+    var map = L.map('map').setView([37.770541, -122.435223], 16);
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      {#id: 'mapbox/satellite-v9',#}
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken: 'pk.eyJ1IjoiamFzb25jYmVubiIsImEiOiJjbDBvd2UzeDYxdWlhM2lzNXg3cmZ0dm8xIn0.oPAb08Z-DAOcSj8wSe8y9Q'
+    }).addTo(map);
+
+    const people = JSON.parse(JSON.parse(document.getElementById('people-data').textContent))
+    const buildings = JSON.parse(JSON.parse(document.getElementById('building-data').textContent))
+    const eventsGeoJSON = JSON.parse(document.getElementById('events-geojson').textContent)[0].json_build_object
+    console.log(buildings)
+    console.log(eventsGeoJSON)
+
+    function getStyle(feature, color) {
+      return {
+        fillColor: color,
+        weight: 1,
+        opacity: 1,
+        color: color,
+        fillOpacity: 0.7
+      };
+    }
+
+    L.geoJSON(people, {
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, getStyle(feature, '#66bd63'));
+      },
+    }).bindPopup(function (layer) {
+      return layer.feature.properties.first_name + " " + layer.feature.properties.last_name;
+    }).addTo(map);
+
+    L.geoJSON(buildings, {
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, getStyle(feature, '#a50026'));
+      },
+    }).bindPopup(function (layer) {
+      return layer.feature.properties.name;
+    }).addTo(map);
+
+    L.geoJSON(eventsGeoJSON, {
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, getStyle(feature, '#f46d43'));
+      },
+    }).bindPopup(function (layer) {
+      return `${layer.feature.properties.name} (${layer.feature.properties.building_name})`;
+    }).addTo(map);
+
+
+  }
+
+  main()
+
+</script>
+
+</body>
+</html>

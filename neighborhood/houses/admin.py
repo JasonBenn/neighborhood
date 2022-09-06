@@ -1,7 +1,7 @@
 from django.contrib.gis import admin
 from django.contrib.gis.geos import Point
 
-from houses.models import Building, Person, Rater, Rating
+from houses.models import Building, Event, Person, Rater, Rating
 
 
 class RaterAdmin(admin.ModelAdmin):
@@ -26,12 +26,20 @@ gis_kwargs = {
 
 class PersonAdmin(admin.GISModelAdmin):
     gis_widget_kwargs = {'attrs': gis_kwargs}
+    # list_filter = ('building')
+    # list_display = ("name", "building")
 
 
 class BuildingAdmin(admin.GISModelAdmin):
     gis_widget_kwargs = {'attrs': gis_kwargs}
 
+
+class EventAdmin(admin.GISModelAdmin):
+    gis_widget_kwargs = {'attrs': gis_kwargs}
+
+
 admin.site.register(Rating, RatingAdmin)
 admin.site.register(Rater, RaterAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Building, BuildingAdmin)
+admin.site.register(Event, EventAdmin)
